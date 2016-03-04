@@ -100,14 +100,14 @@ QDateTime FolderItemParser::parseDateTime(const QString &aDateTime)
     if (aDateTime.endsWith('Z', Qt::CaseInsensitive))
     {
         // UTC format.
-        dateTime = QDateTime::fromString(aDateTime, DATE_TIME_FORMAT);
+        dateTime = QLocale::c().toDateTime(aDateTime, DATE_TIME_FORMAT);
         dateTime.setTimeSpec(Qt::UTC);
         dateTime = dateTime.toLocalTime();
     }
     else
     {
         // Local time format.
-        dateTime = QDateTime::fromString(aDateTime,
+        dateTime = QLocale::c().toDateTime(aDateTime,
             DATE_TIME_FORMAT.left(DATE_TIME_FORMAT.size() - 1));
         dateTime.setTimeSpec(Qt::LocalTime);
     }
@@ -117,6 +117,6 @@ QDateTime FolderItemParser::parseDateTime(const QString &aDateTime)
 
 QString FolderItemParser::encodeDateTime(const QDateTime &aDateTime)
 {
-    return aDateTime.toUTC().toString(DATE_TIME_FORMAT);
+    return QLocale::c().toString(aDateTime.toUTC(), DATE_TIME_FORMAT);
 }
 
