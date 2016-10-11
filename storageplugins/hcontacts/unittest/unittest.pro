@@ -1,7 +1,8 @@
 TEMPLATE = app
 TARGET = hcontacts-tests
 
-QT += core testlib sql gui
+QT -= gui
+QT += core testlib sql
 CONFIG += link_pkgconfig
 
 equals(QT_MAJOR_VERSION, 4): {

@@ -8,7 +8,6 @@ License: LGPLv2.1
 Source0: %{name}-%{version}.tar.gz
 BuildRequires: pkgconfig(glib-2.0)
 BuildRequires: pkgconfig(Qt5Core)
-BuildRequires: pkgconfig(Qt5Gui)
 BuildRequires: pkgconfig(Qt5Network)
 BuildRequires: pkgconfig(Qt5Contacts)
 BuildRequires: pkgconfig(Qt5Versit)
