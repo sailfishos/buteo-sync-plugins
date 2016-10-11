@@ -25,7 +25,8 @@ VER_MAJ = 1
 VER_MIN = 0
 VER_PAT = 0
 
-QT += sql gui
+QT -= gui
+QT += sql
 
 HEADERS += ContactsStorage.h \
            ContactsBackend.h \
