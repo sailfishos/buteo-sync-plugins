@@ -70,4 +70,5 @@ INSTALLS += target headers
 QMAKE_PKGCONFIG_DESTDIR = pkgconfig
 QMAKE_PKGCONFIG_LIBDIR  = $$target.path
 QMAKE_PKGCONFIG_INCDIR  = $$headers.path
+QMAKE_PKGCONFIG_VERSION = $$VERSION
 pkgconfig.files = $${TARGET}.pc

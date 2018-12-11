@@ -101,7 +101,7 @@ Requires: %{name} = %{version}
 
 
 %build
-%qmake5 "CONFIG+=PLUGIN_EXE"
+%qmake5 "VERSION=%{version}" "CONFIG+=PLUGIN_EXE"
 make %{?_smp_mflags}
 
 
