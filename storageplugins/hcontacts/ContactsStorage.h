@@ -28,11 +28,7 @@
 
 #include "StoragePlugin.h"
 #include "ContactsBackend.h"
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include "buteosyncfw5/DeletedItemsIdStorage.h"
-#else
-#include "buteosyncfw/DeletedItemsIdStorage.h"
-#endif
 
 class SimpleItem;
 
@@ -235,14 +231,8 @@ private:
 
     Buteo::DeletedItemsIdStorage        iDeletedItems; ///< Backend for tracking deleted items
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QMap<QString, QDateTime>    iSnapshot;
     QList<QString>              iFreshItems;
-#else
-    QMap<QContactLocalId, QDateTime>    iSnapshot;
-    QList<QContactLocalId>              iFreshItems;
-#endif
-
 };
 
 /// \brief returns a pointer to new contact storage object

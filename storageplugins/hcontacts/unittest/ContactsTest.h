@@ -33,10 +33,6 @@
 #include <QContactManager>
 #include <QContactId>
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-QTM_USE_NAMESPACE;
-#endif
-
 namespace Buteo
 {
     class StoragePlugin;

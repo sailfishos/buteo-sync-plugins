@@ -28,11 +28,7 @@
 #include <QtDBus>
 #include <QSocketNotifier>
 
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
 #include <buteosyncml5/OBEXConnection.h>
-#else
-#include <buteosyncml/OBEXConnection.h>
-#endif
 
 class BTConnection : public QObject, public DataSync::OBEXConnection
 {

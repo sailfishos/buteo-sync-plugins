@@ -5,13 +5,8 @@
 #include <QContactManager>
 #include <QList>
 
-#if QT_VERSION > QT_VERSION_CHECK(5, 0, 0)
 #include <QContactId>
 using namespace QtContacts;
-#define QContactLocalId QContactId
-#else
-QTM_USE_NAMESPACE;
-#endif
 
 class ContactsChangeNotifier : public QObject
 {
@@ -40,9 +35,9 @@ Q_SIGNALS:
     void change();
 
 private Q_SLOTS:
-    void onContactsAdded(const QList<QContactLocalId>& ids);
-    void onContactsRemoved(const QList<QContactLocalId>& ids);
-    void onContactsChanged(const QList<QContactLocalId>& ids);
+    void onContactsAdded(const QList<QContactId>& ids);
+    void onContactsRemoved(const QList<QContactId>& ids);
+    void onContactsChanged(const QList<QContactId>& ids);
 
 private:
     QContactManager* iManager;

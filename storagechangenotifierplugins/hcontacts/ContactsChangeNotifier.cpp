@@ -21,40 +21,34 @@ void ContactsChangeNotifier::enable()
 {
     if(iManager && iDisabled)
     {
-        QObject::connect(iManager, SIGNAL(contactsAdded(const QList<QContactLocalId>&)),
-                         this, SLOT(onContactsAdded(const QList<QContactLocalId>&)));
+        QObject::connect(iManager, SIGNAL(contactsAdded(const QList<QContactId>&)),
+                         this, SLOT(onContactsAdded(const QList<QContactId>&)));
 
-        QObject::connect(iManager, SIGNAL(contactsRemoved(const QList<QContactLocalId>&)),
-                         this, SLOT(onContactsRemoved(const QList<QContactLocalId>&)));
+        QObject::connect(iManager, SIGNAL(contactsRemoved(const QList<QContactId>&)),
+                         this, SLOT(onContactsRemoved(const QList<QContactId>&)));
 
-        QObject::connect(iManager, SIGNAL(contactsChanged(const QList<QContactLocalId>&)),
-                         this, SLOT(onContactsChanged(const QList<QContactLocalId>&)));
+        QObject::connect(iManager, SIGNAL(contactsChanged(const QList<QContactId>&)),
+                         this, SLOT(onContactsChanged(const QList<QContactId>&)));
         iDisabled = false;
     }
 }
 
-void ContactsChangeNotifier::onContactsAdded(const QList<QContactLocalId>& ids)
+void ContactsChangeNotifier::onContactsAdded(const QList<QContactId>& ids)
 {
     FUNCTION_CALL_TRACE;
     if(ids.count())
     {
         QList<QContact> contacts = iManager->contacts(ids);
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        foreach(QContact contact, contacts)
-        {
-            LOG_DEBUG("Added contact" << contact.displayLabel());
-        }
-#endif
         emit change();
     }
 }
 
-void ContactsChangeNotifier::onContactsRemoved(const QList<QContactLocalId>& ids)
+void ContactsChangeNotifier::onContactsRemoved(const QList<QContactId>& ids)
 {
     FUNCTION_CALL_TRACE;
     if(ids.count())
     {
-        foreach(QContactLocalId id, ids)
+        foreach(QContactId id, ids)
         {
             LOG_DEBUG("Removed contact with id" << id);
         }
@@ -62,18 +56,12 @@ void ContactsChangeNotifier::onContactsRemoved(const QList<QContactLocalId>& ids
     }
 }
 
-void ContactsChangeNotifier::onContactsChanged(const QList<QContactLocalId>& ids)
+void ContactsChangeNotifier::onContactsChanged(const QList<QContactId>& ids)
 {
     FUNCTION_CALL_TRACE;
     if(ids.count())
     {
         QList<QContact> contacts = iManager->contacts(ids);
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        foreach(QContact contact, contacts)
-        {
-            LOG_DEBUG("Changed contact" << contact.displayLabel());
-        }
-#endif
         emit change();
     }
 }

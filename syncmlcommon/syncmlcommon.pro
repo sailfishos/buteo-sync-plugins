@@ -3,18 +3,8 @@ DEPENDPATH += .
 
 CONFIG += link_pkgconfig create_pc create_prl
 
-equals(QT_MAJOR_VERSION, 4): {
-    TARGET = syncmlcommon
-    CONFIG += mobility
-    MOBILITY += systeminfo
-    PKGCONFIG = buteosyncfw buteosyncml
-}
-
-equals(QT_MAJOR_VERSION, 5): {
-    TARGET = syncmlcommon5
-    PKGCONFIG = buteosyncfw5 buteosyncml5 Qt5SystemInfo
-}
-
+TARGET = syncmlcommon5
+PKGCONFIG = buteosyncfw5 buteosyncml5 Qt5SystemInfo
 
 QT += sql xml
 QT -= gui

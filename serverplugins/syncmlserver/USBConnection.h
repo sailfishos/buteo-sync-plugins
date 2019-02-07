@@ -31,11 +31,7 @@
 #include <QSocketNotifier>
 #endif
 
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
 #include <buteosyncml5/OBEXConnection.h>
-#else
-#include <buteosyncml/OBEXConnection.h>
-#endif
 
 /*! \brief Class for creating connection to a PC that acts as a USB
  *         host for synchronization of data using buteosyncml

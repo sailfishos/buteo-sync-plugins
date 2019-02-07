@@ -26,7 +26,6 @@
 #include <QLibrary>
 #include <QtNetwork>
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <buteosyncfw5/PluginCbInterface.h>
 #include <buteosyncml5/SyncAgent.h>
 #include <buteosyncml5/SyncAgentConfig.h>
@@ -36,17 +35,6 @@
 #include <buteosyncml5/DeviceInfo.h>
 #include <buteosyncfw5/LogMacros.h>
 #include <buteosyncfw5/ProfileEngineDefs.h>
-#else
-#include <buteosyncfw/PluginCbInterface.h>
-#include <buteosyncml/SyncAgent.h>
-#include <buteosyncml/SyncAgentConfig.h>
-#include <buteosyncml/SyncAgentConfigProperties.h>
-#include <buteosyncml/HTTPTransport.h>
-#include <buteosyncml/OBEXTransport.h>
-#include <buteosyncml/DeviceInfo.h>
-#include <buteosyncfw/LogMacros.h>
-#include <buteosyncfw/ProfileEngineDefs.h>
-#endif
 
 #include <Accounts/Account>
 #include "SyncMLConfig.h"

@@ -26,11 +26,7 @@
 
 #include <LogMacros.h>
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <buteosyncml5/StorageProvider.h>
-#else
-#include <buteosyncml/StorageProvider.h>
-#endif
 
 namespace Buteo {
     class Profile;
