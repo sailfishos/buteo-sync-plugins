@@ -7,19 +7,9 @@ INCLUDEPATH += .  \
 
 CONFIG += link_pkgconfig plugin
 
-equals(QT_MAJOR_VERSION, 4): {
-    CONFIG += mobility
-    PKGCONFIG = buteosyncfw qtcontacts-sqlite-extensions contactcache
-    LIBS += -lsyncmlcommon
-    MOBILITY += contacts versit
-    target.path = /usr/lib/buteo-plugins
-}
-
-equals(QT_MAJOR_VERSION, 5): {
-    PKGCONFIG = buteosyncfw5 Qt5Contacts Qt5Versit qtcontacts-sqlite-qt5-extensions contactcache-qt5
-    LIBS += -lsyncmlcommon5
-    target.path = /usr/lib/buteo-plugins-qt5
-}
+PKGCONFIG = buteosyncfw5 Qt5Contacts Qt5Versit qtcontacts-sqlite-qt5-extensions contactcache-qt5
+LIBS += -lsyncmlcommon5
+target.path = /usr/lib/buteo-plugins-qt5
 
 VER_MAJ = 1
 VER_MIN = 0

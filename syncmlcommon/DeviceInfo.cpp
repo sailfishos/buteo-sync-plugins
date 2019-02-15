@@ -61,12 +61,8 @@ QString DeviceInfo::getDeviceIMEI()
 {
         FUNCTION_CALL_TRACE;
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         /// @todo returning first IMEI for now; needs fixing on multisim devices
         return IMEI + deviceInfo.imei(0);
-#else
-        return IMEI + deviceInfo.imei();
-#endif
 }
 
 QString DeviceInfo::getManufacturer()
@@ -88,11 +84,7 @@ QString DeviceInfo::getSwVersion()
 {
     FUNCTION_CALL_TRACE;
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     return deviceInfo.version(QDeviceInfo::Firmware);
-#else
-    return systemInfo.version(QtMobility::QSystemInfo::Firmware);
-#endif
 }
 
 

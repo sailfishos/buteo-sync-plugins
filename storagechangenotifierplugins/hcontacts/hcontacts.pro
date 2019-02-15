@@ -5,17 +5,8 @@ DEPENDPATH += .
 
 CONFIG += link_pkgconfig plugin link_pkgconfig
 
-equals(QT_MAJOR_VERSION, 4): {
-    CONFIG += mobility
-    PKGCONFIG += buteosyncfw
-    MOBILITY += contacts
-    target.path = /usr/lib/buteo-plugins
-}
-
-equals(QT_MAJOR_VERSION, 5): {
-    PKGCONFIG += buteosyncfw5 Qt5Contacts
-    target.path = /usr/lib/buteo-plugins-qt5
-}
+PKGCONFIG += buteosyncfw5 Qt5Contacts
+target.path = /usr/lib/buteo-plugins-qt5
 
 VER_MAJ = 1
 VER_MIN = 0

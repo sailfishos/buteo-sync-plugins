@@ -54,16 +54,8 @@ QT += testlib
 QT -= gui
 CONFIG += link_pkgconfig
 
-equals(QT_MAJOR_VERSION, 4): {
-    PKGCONFIG = buteosyncfw libkcalcoren libmkcal
-    CONFIG += mkcal
-    LIBS += -lsyncmlcommon
-}
-
-equals(QT_MAJOR_VERSION, 5): {
-    PKGCONFIG = buteosyncfw5 libkcalcoren-qt5 libmkcal-qt5
-    LIBS += -lsyncmlcommon5
-}
+PKGCONFIG = buteosyncfw5 libkcalcoren-qt5 libmkcal-qt5
+LIBS += -lsyncmlcommon5
 
 QMAKE_CLEAN += $(OBJECTS_DIR)/*.gcda $(OBJECTS_DIR)/*.gcno
 QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage

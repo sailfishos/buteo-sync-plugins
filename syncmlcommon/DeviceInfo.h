@@ -28,13 +28,7 @@
 #include <QStringList>
 #include <QMutex>
 #include <QMap>
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QDeviceInfo>
-#else
-#include <QtSystemInfo/QSystemInfo>
-#include <QtSystemInfo/QSystemDeviceInfo>
-#endif
 
 namespace Buteo {
 
@@ -113,8 +107,6 @@ namespace Buteo {
     protected:
 
     private:
-
-
         Source iSource;
         QStringList iProperties;
         QString iDeviceInfoFile;
@@ -135,13 +127,8 @@ namespace Buteo {
         QString getDeviceIMEI();
         QString getDeviceType();
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         QDeviceInfo deviceInfo;
         QDeviceInfo systemInfo;
-#else
-        QtMobility::QSystemDeviceInfo deviceInfo;
-        QtMobility::QSystemInfo systemInfo;
-#endif
 
 #ifdef SYNC_APP_UNITTESTS
        friend class DeviceInfoTest;

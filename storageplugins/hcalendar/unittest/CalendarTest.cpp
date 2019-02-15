@@ -25,12 +25,7 @@
 
 #include "CalendarTest.h"
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <buteosyncfw5/StorageItem.h>
-#else
-#include <buteosyncfw/StorageItem.h>
-#endif
-
 #include <QtTest>
 
 void CalendarTest::initTestCase()

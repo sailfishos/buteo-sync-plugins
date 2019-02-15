@@ -22,17 +22,10 @@
 #include "SyncMLServer.h"
 #include <LogMacros.h>
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <buteosyncfw5/SyncProfile.h>
 #include <buteosyncml5/OBEXTransport.h>
 #include <buteosyncml5/SyncAgentConfig.h>
 #include <buteosyncfw5/PluginCbInterface.h>
-#else
-#include <buteosyncfw/SyncProfile.h>
-#include <buteosyncfw/PluginCbInterface.h>
-#include <buteosyncml/OBEXTransport.h>
-#include <buteosyncml/SyncAgentConfig.h>
-#endif
 
 #include "SyncMLConfig.h"
 #include "DeviceInfo.h"

@@ -45,12 +45,7 @@
 #include <qtcontacts-extensions.h>
 #include <QContactOriginMetadata>
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QContactIdFilter>
-#define QContactLocalIdFilter QContactIdFilter
-#else
-#include <QContactLocalIdFilter>
-#endif
 
 #include <QBuffer>
 #include <QSet>
@@ -220,11 +215,7 @@ QContactManager::Error ContactsBackend::modifyContact(const QString &aID, const 
         LOG_WARNING("Contacts backend not available");
     } else {
         QContact oldContactData;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         getContact(QContactId::fromString (aID), oldContactData);
-#else
-        getContact(aID.toUInt(), oldContactData);
-#endif
 
         QList<QVersitDocument> documents = convertVCardListToVersitDocumentList(QStringList() << aContact);
         if (documents.size() < 1) {
@@ -293,21 +284,9 @@ QMap<int,ContactsStatus> ContactsBackend::modifyContacts(
     } else {
         for (int i = 0; i < contacts.size(); i++) {
             LOG_DEBUG("Id of the contact to be replaced" << aContactIdList.at(i));
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
             QContactLocalId uniqueContactItemID = QContactId::fromString (aContactIdList.at(i));
-#else
-            QContactLocalId managerLocalIdOfItemBeingModified = aContactIdList.at(i).toUInt();
-            QContactId uniqueContactItemID;
-            uniqueContactItemID.setLocalId(managerLocalIdOfItemBeingModified);
-#endif
-
             contacts[i].setId(uniqueContactItemID);
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
             LOG_DEBUG("Replacing item's ID " << contacts.at(i));
-#else
-            LOG_DEBUG("Replacing item's ID " << contacts.at(i).localId());
-#endif
         }
 
         if(iWriteMgr->saveContacts(&contacts , &errors)) {
@@ -320,13 +299,8 @@ QMap<int,ContactsStatus> ContactsBackend::modifyContacts(
         // so populate NoError if there's no error.
         // TODO QContactManager populates indices from the qContactList, but we populate keys, is this OK?
         for (int i = 0; i < contacts.size(); i++) {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
             QContactLocalId contactId = contacts.at(i).id();
             status.id = contactId.toString ();
-#else
-            QContactLocalId contactId = contacts.at(i).id().localId();
-            status.id = (int)contactId;
-#endif
             if( !errors.contains(i) ) {
                 LOG_DEBUG("No error for contact with id " << contactId << " and index " << i);
                 status.errorCode = QContactManager::NoError;
@@ -360,11 +334,7 @@ QMap<int , ContactsStatus> ContactsBackend::deleteContacts(const QStringList &aC
     else {
         QList<QContactLocalId> qContactIdList;
         foreach (QString id, aContactIDList ) {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
             qContactIdList.append(QContactLocalId::fromString (id));
-#else
-            qContactIdList.append(QContactLocalId(id.toUInt()));
-#endif
         }
 
         if(iWriteMgr->removeContacts(qContactIdList , &errors)) {
@@ -379,11 +349,8 @@ QMap<int , ContactsStatus> ContactsBackend::deleteContacts(const QStringList &aC
         // TODO QContactManager populates indices from the qContactList, but we populate keys, is this OK?
         for (int i = 0; i < qContactIdList.size(); i++) {
             QContactLocalId contactId = qContactIdList.value(i);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
             status.id = contactId.toString ();
-#else
-            status.id = (int)contactId;
-#endif
+
             if( !errors.contains(i) )
             {
                 LOG_DEBUG("No error for contact with id " << contactId << " and index " << i);
@@ -508,27 +475,14 @@ QString ContactsBackend::convertQContactToVCard(const QContact &aContact)
         return vCard;
 }
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 QMap<QString, QString> ContactsBackend::convertQContactListToVCardList(
     const QList<QContact> & aContactList)
-#else
-QMap<QContactLocalId, QString> ContactsBackend::convertQContactListToVCardList(
-    const QList<QContact> & aContactList)
-#endif
 {
         FUNCTION_CALL_TRACE;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         QMap<QString, QString> idDataMap;
-#else
-        QMap<QContactLocalId, QString> idDataMap;
-#endif
 
         foreach (QContact contact, aContactList) {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
                 idDataMap[contact.id ().toString ()] = convertQContactToVCard(contact);
-#else
-                idDataMap[contact.localId()] = convertQContactToVCard(contact);
-#endif
         }
 
         return idDataMap;
@@ -544,20 +498,18 @@ void ContactsBackend::getSpecifiedContactIds(const QContactChangeLogFilter::Even
 
     aIdList = iReadMgr->contactIds(filter);
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     // Fetch the ids from aIdList
     QList<QString> strIdList;
     foreach (const QContactId& id, aIdList) {
         strIdList << id.toString ();
     }
-#endif
 
     // Filter out ids for items that were added after the specified time.
     if (aEventType != QContactChangeLogFilter::EventAdded)
     {
         filter.setEventType(QContactChangeLogFilter::EventAdded);
         QList<QContactLocalId> addedList = iReadMgr->contactIds(filter);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+
         QList<QString> addedStrIdList;
         foreach (const QContactId& id, addedList) {
             addedStrIdList << id.toString ();
@@ -566,7 +518,7 @@ void ContactsBackend::getSpecifiedContactIds(const QContactChangeLogFilter::Even
         foreach (const QString addedId, addedStrIdList) {
             strIdList.removeAll (addedId);
         }
-#endif
+
         foreach (const QContactLocalId &id, addedList)
         {
             aIdList.removeAll(id);
@@ -576,7 +528,6 @@ void ContactsBackend::getSpecifiedContactIds(const QContactChangeLogFilter::Even
         // This is a defensive procedure to prevent duplicate items being sent.
         // QSet does not allow duplicates, thus transforming QList to QSet and back
         // again will remove any duplicate items in the original QList.
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     int originalIdCount = strIdList.size ();
     QSet<QString> idSet = strIdList.toSet ();
     int idCountAfterDupRemoval = idSet.size ();
@@ -594,20 +545,6 @@ void ContactsBackend::getSpecifiedContactIds(const QContactChangeLogFilter::Even
     foreach (const QString &id, strIdList) {
         aIdList << QContactId::fromString (id);
     }
-#else
-        int originalIdCount = aIdList.size();
-        QSet<QContactLocalId> idSet = aIdList.toSet();
-        int idCountAfterDupRemoval = idSet.size();
-
-        LOG_DEBUG("Item IDs found (returned / incl. duplicates): " << idCountAfterDupRemoval << "/" << originalIdCount);
-
-        if (originalIdCount != idCountAfterDupRemoval) {
-                LOG_WARNING("Contacts backend returned duplicate items for requested list");
-                LOG_WARNING("Duplicate item IDs have been removed");
-        } // no else
-
-        aIdList = idSet.toList();
-#endif
 }
 
 QDateTime ContactsBackend::lastModificationTime(const QContactLocalId &aContactId)
@@ -623,12 +560,7 @@ QDateTime ContactsBackend::lastModificationTime(const QContactLocalId &aContactI
         QContact contact;
         getContact(aContactId, contact);
         QContactTimestamp contactTimestamps;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         contactTimestamps = contact.detail (QContactTimestamp::Type);
-#else
-        QString definitionName = contactTimestamps.definitionName();
-        contactTimestamps = (QContactTimestamp)contact.detail(definitionName);
-#endif
         lastModificationTime = contactTimestamps.lastModified();
     }
 
@@ -661,7 +593,7 @@ void ContactsBackend::getContacts(const QList<QContactLocalId>& aContactIds,
 {
     FUNCTION_CALL_TRACE;
 
-    QContactLocalIdFilter contactFilter;
+    QContactIdFilter contactFilter;
     contactFilter.setIds(aContactIds);
 
     if (iReadMgr != NULL) {
@@ -669,13 +601,8 @@ void ContactsBackend::getContacts(const QList<QContactLocalId>& aContactIds,
     }
 }
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 void ContactsBackend::getContacts(const QList<QContactLocalId>&  aIdsList,
                                   QMap<QString,QString>& aDataMap)
-#else
-void ContactsBackend::getContacts(const QList<QContactLocalId>&  aIdsList,
-                                  QMap<QContactLocalId,QString>& aDataMap)
-#endif
 {
     FUNCTION_CALL_TRACE;
 
@@ -709,20 +636,11 @@ QList<QDateTime> ContactsBackend::getCreationTimes( const QList<QContactLocalId>
     QList<QDateTime> creationTimes;
     QList<QContact> contacts;
 
-    QContactLocalIdFilter contactFilter;
+    QContactIdFilter contactFilter;
     contactFilter.setIds(aContactIds);
 
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QList<QContactDetail::DetailType> detailTypes;
     detailTypes << QContactTimestamp::Type;
-#else
-    QContactTimestamp contactTimestampDef;
-    QString definitionName = contactTimestampDef.definitionName();
-
-    QStringList definitionNames;
-    definitionNames.append( definitionName );
-#endif
 
     /* Set up fetch hints so that not all details of QContacts be fetched:
      * 1) Fetch only QContactTimestamp details
@@ -735,11 +653,7 @@ QList<QDateTime> ContactsBackend::getCreationTimes( const QList<QContactLocalId>
                                       QContactFetchHint::NoActionPreferences |
                                       QContactFetchHint::NoBinaryBlobs );
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     contactHint.setDetailTypesHint (detailTypes);
-#else
-    contactHint.setDetailDefinitionsHint( definitionNames );
-#endif
 
     QDateTime currentTime = QDateTime::currentDateTime();
 
@@ -753,11 +667,7 @@ QList<QDateTime> ContactsBackend::getCreationTimes( const QList<QContactLocalId>
 
             for( int a = 0; a < contacts.count(); ++a )
             {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
                 if( contacts[a].id().toString () == aContactIds[i].toString () )
-#else
-                if( contacts[a].id().localId() == aContactIds[i] )
-#endif
                 {
                     QContactTimestamp contactTimestamp = contacts[a].detail<QContactTimestamp>();
                     if( !contactTimestamp.created().isNull() &&

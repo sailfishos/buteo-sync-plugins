@@ -30,23 +30,15 @@
 #include <QVersitDocument>
 #include <QStringList>
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-QTM_USE_NAMESPACE;
-#else
 using namespace QtContacts;
 using namespace QtVersit;
 #define QContactLocalId QContactId
-#endif
 
 enum VCARD_VERSION { VCARD_VERSION21, VCARD_VERSION30 };
 
 struct ContactsStatus
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QString id;
-#else
-    int id;
-#endif
     QContactManager::Error errorCode;
 };
 
@@ -127,14 +119,8 @@ public:
      * @param aContactIDs List of contact IDs to be returned
      * @param aContactData Returned contact data
      */
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     void getContacts(const QList<QContactLocalId> &aContactIDs,
                      QMap<QString,QString>& aContactData );
-#else
-    void getContacts(const QList<QContactLocalId> &aContactIDs,
-                     QMap<QContactLocalId,QString>& aContactData );
-#endif
-
     /*!
      * \brief Get multiple contacts at once as QContact objects
      * @param aContactIds List of contact IDs
@@ -215,14 +201,8 @@ public:
     QString convertQContactToVCard(const QContact &aContact);
 private: // functions
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QMap<QString, QString> convertQContactListToVCardList \
                                         (const QList<QContact> &aContactList);
-#else
-    QMap<QContactLocalId, QString> convertQContactListToVCardList \
-                                        (const QList<QContact> &aContactList);
-#endif
-
     QList<QVersitDocument> convertVCardListToVersitDocumentList \
                                 (const QStringList &aVCardList);
     void prepareContactSave(QList<QContact> *contactList);

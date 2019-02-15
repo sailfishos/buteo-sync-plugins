@@ -18,7 +18,6 @@ INCLUDEPATH += . \
     /usr/include/sync \
     ../../../syncmlcommon
 
-
 # Input
 HEADERS += CalendarTest.h \
            CalendarStorage.h \
@@ -35,17 +34,8 @@ SOURCES += CalendarTest.cpp \
 CONFIG += link_pkgconfig
 LIBS += -L../../../syncmlcommon
 
-equals(QT_MAJOR_VERSION, 4): {
-    PKGCONFIG = buteosyncfw libkcalcoren libmkcal
-    CONFIG += mkcal
-    LIBS += -lsyncmlcommon
-}
-
-equals(QT_MAJOR_VERSION, 5): {
-    PKGCONFIG = buteosyncfw5 libkcalcoren-qt5 libmkcal-qt5
-    LIBS += -lsyncmlcommon5
-}
-
+PKGCONFIG = buteosyncfw5 libkcalcoren-qt5 libmkcal-qt5
+LIBS += -lsyncmlcommon5
 
 QT += testlib \
     core \

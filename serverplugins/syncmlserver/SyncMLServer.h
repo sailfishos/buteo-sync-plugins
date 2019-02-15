@@ -23,8 +23,10 @@
 #define SYNCMLSERVER_H
 
 #include "syncmlserver_global.h"
+#include "USBConnection.h"
+#include "BTConnection.h"
+#include "SyncMLStorageProvider.h"
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <buteosyncfw5/ServerPlugin.h>
 #include <buteosyncfw5/SyncCommonDefs.h>
 #include <buteosyncfw5/SyncResults.h>
@@ -33,19 +35,6 @@
 #include <buteosyncml5/Transport.h>
 #include <buteosyncml5/SyncAgentConfig.h>
 #include <buteosyncml5/OBEXTransport.h>
-#else
-#include <buteosyncfw/ServerPlugin.h>
-#include <buteosyncfw/SyncCommonDefs.h>
-#include <buteosyncfw/SyncResults.h>
-#include <buteosyncml/StorageProvider.h>
-#include <buteosyncml/SyncAgent.h>
-#include <buteosyncml/Transport.h>
-#include <buteosyncml/OBEXTransport.h>
-#endif
-
-#include "USBConnection.h"
-#include "BTConnection.h"
-#include "SyncMLStorageProvider.h"
 
 namespace Buteo {
     class ServerPlugin;

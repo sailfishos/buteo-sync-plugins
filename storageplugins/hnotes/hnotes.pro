@@ -7,18 +7,9 @@ LIBS += -L../../syncmlcommon
 
 CONFIG += link_pkgconfig plugin
 
-equals(QT_MAJOR_VERSION, 4): {
-    PKGCONFIG = buteosyncfw libkcalcoren libmkcal
-    CONFIG += mkcal
-    LIBS += -lsyncmlcommon
-    target.path = /usr/lib/buteo-plugins
-}
-
-equals(QT_MAJOR_VERSION, 5): {
-    PKGCONFIG = buteosyncfw5 libkcalcoren-qt5 libmkcal-qt5
-    LIBS += -lsyncmlcommon5
-    target.path = /usr/lib/buteo-plugins-qt5
-}
+PKGCONFIG = buteosyncfw5 libkcalcoren-qt5 libmkcal-qt5
+LIBS += -lsyncmlcommon5
+target.path = /usr/lib/buteo-plugins-qt5
 
 VER_MAJ = 1
 VER_MIN = 0
