@@ -9,7 +9,7 @@ CONFIG += link_pkgconfig plugin
 
 PKGCONFIG = buteosyncfw5 Qt5Contacts Qt5Versit qtcontacts-sqlite-qt5-extensions contactcache-qt5
 LIBS += -lsyncmlcommon5
-target.path = /usr/lib/buteo-plugins-qt5
+target.path = $$[QT_INSTALL_LIBS]/buteo-plugins-qt5
 
 VER_MAJ = 1
 VER_MIN = 0

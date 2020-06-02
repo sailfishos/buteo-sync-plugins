@@ -36,13 +36,13 @@ PLUGIN_DLL {
     TEMPLATE = lib
     CONFIG += plugin
     DEFINES += SYNCMLSERVER_LIBRARY
-    target.path = /usr/lib/buteo-plugins-qt5
+    target.path = $$[QT_INSTALL_LIBS]/buteo-plugins-qt5
 }
 
 PLUGIN_EXE {
     message("building syncml-server as out-of-process plugin")
     TEMPLATE = app
-    target.path = /usr/lib/buteo-plugins-qt5/oopp/
+    target.path = $$[QT_INSTALL_LIBS]/buteo-plugins-qt5/oopp/
     DEFINES += "CLASSNAME=SyncMLServer"
     DEFINES += CLASSNAME_H=\\\"SyncMLServer.h\\\"
     DEFINES += GLIB_FD_WATCH
