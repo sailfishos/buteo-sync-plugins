@@ -22,13 +22,13 @@ PLUGIN_DLL {
     message("building syncml-client as in-process plugin")
     TEMPLATE = lib
     CONFIG += plugin
-    target.path = /usr/lib/buteo-plugins-qt5
+    target.path = $$[QT_INSTALL_LIBS]/buteo-plugins-qt5
 }
 
 PLUGIN_EXE {
     message("building syncml-client as out-of-process plugin")
     TEMPLATE = app
-    target.path = /usr/lib/buteo-plugins-qt5/oopp
+    target.path = $$[QT_INSTALL_LIBS]/buteo-plugins-qt5/oopp
 
     DEFINES += "CLASSNAME=SyncMLClient"
     DEFINES += CLASSNAME_H=\\\"SyncMLClient.h\\\"

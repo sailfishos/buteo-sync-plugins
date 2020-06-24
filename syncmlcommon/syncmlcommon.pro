@@ -43,7 +43,7 @@ QMAKE_CLEAN += $(TARGET)
 QMAKE_CLEAN += $(OBJECTS_DIR)/*.gcda $(OBJECTS_DIR)/*.gcno $(OBJECTS_DIR)/*.gcov $(OBJECTS_DIR)/moc_* lib$${TARGET}.prl pkgconfig/*
 
 #install
-target.path = /usr/lib/
+target.path = $$[QT_INSTALL_LIBS]/
 headers.path = /usr/include/syncmlcommon/
 headers.files = ItemAdapter.h \
            ItemIdMapper.h \

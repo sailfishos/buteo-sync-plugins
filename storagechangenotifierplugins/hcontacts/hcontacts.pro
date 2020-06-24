@@ -6,7 +6,7 @@ DEPENDPATH += .
 CONFIG += link_pkgconfig plugin link_pkgconfig
 
 PKGCONFIG += buteosyncfw5 Qt5Contacts
-target.path = /usr/lib/buteo-plugins-qt5
+target.path = $$[QT_INSTALL_LIBS]/buteo-plugins-qt5
 
 VER_MAJ = 1
 VER_MIN = 0

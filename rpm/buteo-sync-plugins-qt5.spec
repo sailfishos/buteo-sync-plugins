@@ -2,8 +2,7 @@ Name: buteo-sync-plugins-qt5
 Version: 0.8.23
 Release: 1
 Summary: Synchronization plugins
-Group: System/Libraries
-URL: https://github.com/nemomobile/buteo-sync-plugins
+URL: https://git.sailfishos.org/mer-core/buteo-sync-plugins
 License: LGPLv2.1
 Source0: %{name}-%{version}.tar.gz
 BuildRequires: pkgconfig(glib-2.0)
@@ -46,7 +45,6 @@ BuildRequires: doxygen
 %package devel
 Requires: %{name} = %{version}-%{release}
 Summary: Development files for %{name}
-Group: Development/Libraries
 
 %description devel
 %{summary}.
@@ -60,7 +58,6 @@ Group: Development/Libraries
 
 %package doc
 Summary: Documentation for %{name}
-Group: Documentation
 
 %description doc
 %{summary}.
@@ -72,7 +69,6 @@ Group: Documentation
 
 %package tests
 Summary: Tests for %{name}
-Group: System/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: blts-tools
 
@@ -86,7 +82,6 @@ Requires: blts-tools
 
 %package -n buteo-service-memotoo
 Summary: Memotoo service description for Buteo SyncML
-Group: System/Libraries
 Requires: %{name} = %{version}
 
 %description -n buteo-service-memotoo
