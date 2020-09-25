@@ -24,7 +24,6 @@ ContactBuilder::ContactBuilder(QContactManager *mgr, const QString &syncTarget, 
     d->manager = mgr;
     d->propertyHandler = new SeasidePropertyHandler(ignoredDetailTypes);
     d->unimportableDetailTypes = ignoredDetailTypes;
-    d->importableSyncTargets = QStringList();
 
     d->extraData.insert("syncTarget", syncTarget);
     d->extraData.insert("originId", originId);
