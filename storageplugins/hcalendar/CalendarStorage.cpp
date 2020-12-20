@@ -119,7 +119,7 @@ bool CalendarStorage::getAllItems( QList<Buteo::StorageItem*>& aItems )
 
     LOG_DEBUG( "Retrieving all calendar events and todo's" );
 
-    KCalCore::Incidence::List incidences;
+    KCalendarCore::Incidence::List incidences;
 
     if( !iCalendar.getAllIncidences( incidences ) ) {
         LOG_DEBUG( "Could not retrieve all calendar events and todo's" );
@@ -139,7 +139,7 @@ bool CalendarStorage::getAllItemIds( QList<QString>& aItemIds )
 
     LOG_DEBUG( "Retrieving all calendar events and todo's" );
 
-    KCalCore::Incidence::List incidences;
+    KCalendarCore::Incidence::List incidences;
 
     if( !iCalendar.getAllIncidences( incidences ) ) {
         LOG_DEBUG( "Could not retrieve all calendar events and todo's" );
@@ -159,7 +159,7 @@ bool CalendarStorage::getNewItems( QList<Buteo::StorageItem*>& aNewItems, const 
 
     LOG_DEBUG( "Retrieving new calendar events and todo's" );
 
-    KCalCore::Incidence::List incidences;
+    KCalendarCore::Incidence::List incidences;
 
     if( !iCalendar.getAllNew( incidences, normalizeTime( aTime ) ) ) {
         LOG_DEBUG( "Could not retrieve new calendar events and todo's" );
@@ -179,7 +179,7 @@ bool CalendarStorage::getNewItemIds( QList<QString>& aNewItemIds, const QDateTim
 
     LOG_DEBUG( "Retrieving new calendar events and todo's" );
 
-    KCalCore::Incidence::List incidences;
+    KCalendarCore::Incidence::List incidences;
 
     if( !iCalendar.getAllNew( incidences, normalizeTime( aTime ) ) ) {
         LOG_DEBUG( "Could not retrieve new calendar events and todo's" );
@@ -199,7 +199,7 @@ bool CalendarStorage::getModifiedItems( QList<Buteo::StorageItem*>& aModifiedIte
 
     LOG_DEBUG( "Retrieving modified calendar events and todo's" );
 
-    KCalCore::Incidence::List incidences;
+    KCalendarCore::Incidence::List incidences;
 
     if( !iCalendar.getAllModified( incidences, normalizeTime( aTime ) ) ) {
         LOG_DEBUG( "Could not retrieve modified calendar events and todo's" );
@@ -219,7 +219,7 @@ bool CalendarStorage::getModifiedItemIds( QList<QString>& aModifiedItemIds, cons
 
     LOG_DEBUG( "Retrieving modified calendar events and todo's" );
 
-    KCalCore::Incidence::List incidences;
+    KCalendarCore::Incidence::List incidences;
 
     if( !iCalendar.getAllModified( incidences, normalizeTime( aTime ) ) ) {
         LOG_DEBUG( "Could not retrieve modified calendar events and todo's" );
@@ -239,7 +239,7 @@ bool CalendarStorage::getDeletedItemIds( QList<QString>& aDeletedItemIds, const 
 
     LOG_DEBUG( "Retrieving deleted calendar events and todo's" );
 
-    KCalCore::Incidence::List incidences;
+    KCalendarCore::Incidence::List incidences;
 
     if( !iCalendar.getAllDeleted( incidences, normalizeTime( aTime ) ) ) {
         LOG_DEBUG( "Could not retrieve deleted calendar events and todo's" );
@@ -264,8 +264,8 @@ QList<Buteo::StorageItem*> CalendarStorage::getItems( const QStringList& aItemId
 {
     FUNCTION_CALL_TRACE;
 
-    KCalCore::Incidence::List incidences;
-    KCalCore::Incidence::Ptr item;
+    KCalendarCore::Incidence::List incidences;
+    KCalendarCore::Incidence::Ptr item;
     QList<Buteo::StorageItem*> items;
     QStringListIterator itr( aItemIdList );
 
@@ -293,7 +293,7 @@ Buteo::StorageItem* CalendarStorage::getItem( const QString& aItemId )
 {
     FUNCTION_CALL_TRACE;
 
-    KCalCore::Incidence::Ptr item = iCalendar.getIncidence( aItemId );
+    KCalendarCore::Incidence::Ptr item = iCalendar.getIncidence( aItemId );
 
     if( item ) {
         return retrieveItem( item );
@@ -310,7 +310,7 @@ CalendarStorage::OperationStatus CalendarStorage::addItem( Buteo::StorageItem& a
 
     FUNCTION_CALL_TRACE;
 
-    KCalCore::Incidence::Ptr item = generateIncidence( aItem );
+    KCalendarCore::Incidence::Ptr item = generateIncidence( aItem );
 
     if( !item ) {
         LOG_WARNING( "Item has invalid format" );
@@ -363,7 +363,7 @@ CalendarStorage::OperationStatus CalendarStorage::modifyItem( Buteo::StorageItem
 {
     FUNCTION_CALL_TRACE;
 
-    KCalCore::Incidence::Ptr item = generateIncidence( aItem );
+    KCalendarCore::Incidence::Ptr item = generateIncidence( aItem );
 
     if( !item ) {
         LOG_WARNING( "Item has invalid format" );
@@ -428,11 +428,11 @@ QList<CalendarStorage::OperationStatus> CalendarStorage::deleteItems( const QLis
     return results;
 }
 
-KCalCore::Incidence::Ptr CalendarStorage::generateIncidence( Buteo::StorageItem& aItem )
+KCalendarCore::Incidence::Ptr CalendarStorage::generateIncidence( Buteo::StorageItem& aItem )
 {
 	FUNCTION_CALL_TRACE;
 
-    KCalCore::Incidence::Ptr incidence;
+    KCalendarCore::Incidence::Ptr incidence;
     QByteArray itemData;
 
     if( !aItem.read( 0, aItem.getSize(), itemData ) ) {
@@ -455,7 +455,7 @@ KCalCore::Incidence::Ptr CalendarStorage::generateIncidence( Buteo::StorageItem&
     return incidence;
 }
 
-void CalendarStorage::retrieveItems( KCalCore::Incidence::List& aIncidences, QList<Buteo::StorageItem*>& aItems )
+void CalendarStorage::retrieveItems( KCalendarCore::Incidence::List& aIncidences, QList<Buteo::StorageItem*>& aItems )
 {
     FUNCTION_CALL_TRACE;
 
@@ -465,7 +465,7 @@ void CalendarStorage::retrieveItems( KCalCore::Incidence::List& aIncidences, QLi
     }
 }
 
-Buteo::StorageItem* CalendarStorage::retrieveItem( KCalCore::Incidence::Ptr& aIncidence )
+Buteo::StorageItem* CalendarStorage::retrieveItem( KCalendarCore::Incidence::Ptr& aIncidence )
 {
     FUNCTION_CALL_TRACE;
 
@@ -494,7 +494,7 @@ Buteo::StorageItem* CalendarStorage::retrieveItem( KCalCore::Incidence::Ptr& aIn
 
 }
 
-void CalendarStorage::retrieveIds( KCalCore::Incidence::List& aIncidences, QList<QString>& aIds )
+void CalendarStorage::retrieveIds( KCalendarCore::Incidence::List& aIncidences, QList<QString>& aIds )
 {
     FUNCTION_CALL_TRACE;
 

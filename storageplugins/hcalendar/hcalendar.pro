@@ -7,7 +7,7 @@ INCLUDEPATH += . \
 
 CONFIG += link_pkgconfig plugin
 
-PKGCONFIG = buteosyncfw5 libkcalcoren-qt5 libmkcal-qt5
+PKGCONFIG = buteosyncfw5 KF5CalendarCore libmkcal-qt5
 LIBS += -lsyncmlcommon5
 target.path = $$[QT_INSTALL_LIBS]/buteo-plugins-qt5
 

@@ -22,8 +22,8 @@
  */
 
 #include "CalendarBackend.h"
-#include <event.h>
-#include <journal.h>
+#include <KCalendarCore/Event>
+#include <KCalendarCore/Journal>
 #include <LogMacros.h>
 #include <QDir>
 #include <QDebug>
@@ -50,7 +50,7 @@ bool CalendarBackend::init(const QString &aNotebookName, const QString& aUid)
 
     iNotebookStr = aNotebookName;
 
-    iCalendar = mKCal::ExtendedCalendar::Ptr( new mKCal::ExtendedCalendar( KDateTime::Spec::LocalZone( ) ));
+    iCalendar = mKCal::ExtendedCalendar::Ptr( new mKCal::ExtendedCalendar( QTimeZone::systemTimeZone()) );
 
     LOG_DEBUG("Creating Default Maemo Storage");
     iStorage = iCalendar->defaultStorage( iCalendar );
@@ -147,7 +147,7 @@ bool CalendarBackend::uninit()
     return true;
 }
 
-bool CalendarBackend::getAllIncidences( KCalCore::Incidence::List& aIncidences )
+bool CalendarBackend::getAllIncidences( KCalendarCore::Incidence::List& aIncidences )
 {
 	FUNCTION_CALL_TRACE;
 
@@ -164,15 +164,15 @@ bool CalendarBackend::getAllIncidences( KCalCore::Incidence::List& aIncidences )
     return true;
 }
 
-void CalendarBackend::filterIncidences(KCalCore::Incidence::List& aList)
+void CalendarBackend::filterIncidences(KCalendarCore::Incidence::List& aList)
 {
 	FUNCTION_CALL_TRACE;
 	QString event(INCIDENCE_TYPE_EVENT);
 	QString todo(INCIDENCE_TYPE_TODO);
 
 	for (int i = 0; i < aList.size(); ++i) {
-	    KCalCore::Incidence::Ptr incidence = aList.at(i);
-	    if ((incidence->type() != KCalCore::Incidence::TypeEvent) && (incidence->type() != KCalCore::Incidence::TypeTodo)) {
+        KCalendarCore::Incidence::Ptr incidence = aList.at(i);
+        if ((incidence->type() != KCalendarCore::Incidence::TypeEvent) && (incidence->type() != KCalendarCore::Incidence::TypeTodo)) {
 	        LOG_DEBUG("Removing incidence type" << incidence->typeStr());
                 aList.remove( i, 1);
 		incidence.clear();
@@ -180,7 +180,7 @@ void CalendarBackend::filterIncidences(KCalCore::Incidence::List& aList)
         }
 }
 
-bool CalendarBackend::getAllNew( KCalCore::Incidence::List& aIncidences, const QDateTime& aTime )
+bool CalendarBackend::getAllNew( KCalendarCore::Incidence::List& aIncidences, const QDateTime& aTime )
 {
     FUNCTION_CALL_TRACE;
 
@@ -188,9 +188,7 @@ bool CalendarBackend::getAllNew( KCalCore::Incidence::List& aIncidences, const Q
         return false;
     }
 
-    KDateTime kdt( aTime );
-
-    if( !iStorage->insertedIncidences( &aIncidences ,kdt,iNotebookStr) ) {
+    if( !iStorage->insertedIncidences( &aIncidences, aTime, iNotebookStr) ) {
         LOG_WARNING("Error Retrieving New Incidences from the Storage" );
         return false;
     }
@@ -199,7 +197,7 @@ bool CalendarBackend::getAllNew( KCalCore::Incidence::List& aIncidences, const Q
     return true;
 }
 
-bool CalendarBackend::getAllModified( KCalCore::Incidence::List& aIncidences, const QDateTime& aTime )
+bool CalendarBackend::getAllModified( KCalendarCore::Incidence::List& aIncidences, const QDateTime& aTime )
 {
 	FUNCTION_CALL_TRACE;
 
@@ -207,9 +205,7 @@ bool CalendarBackend::getAllModified( KCalCore::Incidence::List& aIncidences, co
         return false;
     }
 
-    KDateTime kdt( aTime );
-
-    if( !iStorage->modifiedIncidences( &aIncidences, kdt,iNotebookStr ) ) {
+    if( !iStorage->modifiedIncidences( &aIncidences, aTime, iNotebookStr ) ) {
         LOG_WARNING(" Error retrieving modified Incidences ");
         return false;
     }
@@ -218,7 +214,7 @@ bool CalendarBackend::getAllModified( KCalCore::Incidence::List& aIncidences, co
     return true;
 }
 
-bool CalendarBackend::getAllDeleted( KCalCore::Incidence::List& aIncidences, const QDateTime& aTime )
+bool CalendarBackend::getAllDeleted( KCalendarCore::Incidence::List& aIncidences, const QDateTime& aTime )
 {
 	FUNCTION_CALL_TRACE;
 
@@ -226,9 +222,7 @@ bool CalendarBackend::getAllDeleted( KCalCore::Incidence::List& aIncidences, con
         return false;
     }
 
-    KDateTime kdt( aTime );
-
-    if( !iStorage->deletedIncidences( &aIncidences, kdt,iNotebookStr ) ) {
+    if( !iStorage->deletedIncidences( &aIncidences, aTime, iNotebookStr ) ) {
         LOG_WARNING(" Error retrieving deleted Incidences ");
         return false;
     }
@@ -237,15 +231,15 @@ bool CalendarBackend::getAllDeleted( KCalCore::Incidence::List& aIncidences, con
     return true;
 }
 
-KCalCore::Incidence::Ptr CalendarBackend::getIncidence( const QString& aUID )
+KCalendarCore::Incidence::Ptr CalendarBackend::getIncidence( const QString& aUID )
 {
     FUNCTION_CALL_TRACE;
 
     QStringList iDs = aUID.split(ID_SEPARATOR);
-    KCalCore::Incidence::Ptr incidence;
+    KCalendarCore::Incidence::Ptr incidence;
     if (iDs.size() == 2) {
-	   iStorage->load ( iDs.at(0), KDateTime::fromString(iDs.at(1)) );
-	   incidence = iCalendar->incidence(iDs.at(0), KDateTime::fromString(iDs.at(1)));
+       iStorage->load ( iDs.at(0), QDateTime::fromString(iDs.at(1), Qt::ISODate) );
+       incidence = iCalendar->incidence(iDs.at(0), QDateTime::fromString(iDs.at(1), Qt::ISODate));
     } else {
 	   iStorage->load ( aUID );
 	   incidence = iCalendar->incidence( aUID );
@@ -253,7 +247,7 @@ KCalCore::Incidence::Ptr CalendarBackend::getIncidence( const QString& aUID )
     return incidence;
 }
 
-QString CalendarBackend::getVCalString(KCalCore::Incidence::Ptr aInci)
+QString CalendarBackend::getVCalString(KCalendarCore::Incidence::Ptr aInci)
 {
     FUNCTION_CALL_TRACE;
 
@@ -261,11 +255,11 @@ QString CalendarBackend::getVCalString(KCalCore::Incidence::Ptr aInci)
 
     QString vcal;
 
-    KCalCore::Incidence::Ptr temp = KCalCore::Incidence::Ptr ( aInci->clone() );
+    KCalendarCore::Incidence::Ptr temp = KCalendarCore::Incidence::Ptr ( aInci->clone() );
     if(temp) {
-	KCalCore::Calendar::Ptr tempCalendar( new KCalCore::MemoryCalendar( KDateTime::UTC ) );
+    KCalendarCore::Calendar::Ptr tempCalendar( new KCalendarCore::MemoryCalendar( QTimeZone::utc() ) );
 	tempCalendar->addIncidence(temp);
-        KCalCore::VCalFormat vcf;
+        KCalendarCore::VCalFormat vcf;
         vcal = vcf.toString(tempCalendar);
     }
     else {
@@ -275,19 +269,19 @@ QString CalendarBackend::getVCalString(KCalCore::Incidence::Ptr aInci)
     return vcal;
 }
 
-QString CalendarBackend::getICalString(KCalCore::Incidence::Ptr aInci)
+QString CalendarBackend::getICalString(KCalendarCore::Incidence::Ptr aInci)
 {
     FUNCTION_CALL_TRACE;
 
     Q_ASSERT( aInci );
 
-    KCalCore::Incidence::Ptr temp = KCalCore::Incidence::Ptr ( aInci->clone() );
+    KCalendarCore::Incidence::Ptr temp = KCalendarCore::Incidence::Ptr ( aInci->clone() );
 
     QString ical;
     if( temp ) {
-	KCalCore::Calendar::Ptr tempCalendar( new KCalCore::MemoryCalendar( KDateTime::UTC ) );
+    KCalendarCore::Calendar::Ptr tempCalendar( new KCalendarCore::MemoryCalendar( QTimeZone::utc() ) );
 	tempCalendar->addIncidence(temp);
-	KCalCore::ICalFormat icf;
+    KCalendarCore::ICalFormat icf;
 	ical = icf.toString(tempCalendar);
     }
     else {
@@ -297,77 +291,39 @@ QString CalendarBackend::getICalString(KCalCore::Incidence::Ptr aInci)
     return ical;
 }
 
-void CalendarBackend::addIncidenceTimeZones(const KCalCore::Calendar::Ptr &aCalendar, const KCalCore::Incidence::Ptr &pInci)
+KCalendarCore::Incidence::Ptr CalendarBackend::getIncidenceFromVcal( const QString& aVString )
 {
     FUNCTION_CALL_TRACE;
 
-    // adding possible timezone to iCalendar
-    KCalCore::ICalTimeZones *tzlist = aCalendar->timeZones();
-    if ( tzlist->count() > 0 ) {
-        QString tz;
-        if (pInci->dtStart().isValid()) {
-            tz = pInci->dtStart().timeZone().name();
-        }
-        else {
-            if ( pInci->type() == KCalCore::Incidence::TypeEvent ) {
-                KCalCore::Event::Ptr event = pInci.staticCast<KCalCore::Event>();
-                if (event->dtEnd().isValid()) {
-                    tz = event->dtEnd().timeZone().name();
-                }
-            } else if( pInci->type() == KCalCore::Incidence::TypeTodo ) {
-                KCalCore::Todo::Ptr todo = pInci.staticCast<KCalCore::Todo>();
-                if ( todo->hasDueDate() ) {
-                    tz = todo->dtDue( true ).timeZone().name();
-                }
-            } else {
-                LOG_WARNING("Wrong incidence type" << pInci->type());
-            }
-        }
-        if (!tz.isEmpty()) {
-            KCalCore::ICalTimeZone zone = tzlist->zone(tz);
-            if ( zone.isValid() ) {
-                KCalCore::ICalTimeZones *zones = iCalendar->timeZones();
-                zones->add( zone );
-            }
-        }
-    }
-}
+    KCalendarCore::Incidence::Ptr pInci;
 
-KCalCore::Incidence::Ptr CalendarBackend::getIncidenceFromVcal( const QString& aVString )
-{
-    FUNCTION_CALL_TRACE;
-
-    KCalCore::Incidence::Ptr pInci;
-
-    KCalCore::Calendar::Ptr tempCalendar( new KCalCore::MemoryCalendar( KDateTime::Spec::LocalZone() ) );
-    KCalCore::VCalFormat vcf;
+    KCalendarCore::Calendar::Ptr tempCalendar( new KCalendarCore::MemoryCalendar( QTimeZone::systemTimeZone()) );
+    KCalendarCore::VCalFormat vcf;
     vcf.fromString(tempCalendar, aVString);
-    KCalCore::Incidence::List lst = tempCalendar->rawIncidences();
+    KCalendarCore::Incidence::List lst = tempCalendar->rawIncidences();
 
     if(!lst.isEmpty()) {
-        pInci = KCalCore::Incidence::Ptr ( lst[0]->clone() );
-        addIncidenceTimeZones(tempCalendar, pInci);
+        pInci = KCalendarCore::Incidence::Ptr ( lst[0]->clone() );
     }
     else {
-    	LOG_WARNING("VCal to Incidence Conversion Failed ");
+        LOG_WARNING("VCal to Incidence Conversion Failed ");
     }
     return pInci;
 }
 
-KCalCore::Incidence::Ptr CalendarBackend::getIncidenceFromIcal( const QString& aIString )
+KCalendarCore::Incidence::Ptr CalendarBackend::getIncidenceFromIcal( const QString& aIString )
 {
 	FUNCTION_CALL_TRACE;
 
-    KCalCore::Incidence::Ptr pInci;
+    KCalendarCore::Incidence::Ptr pInci;
 
-    KCalCore::Calendar::Ptr tempCalendar( new KCalCore::MemoryCalendar( KDateTime::Spec::LocalZone() ) );
-    KCalCore::ICalFormat icf;
+    KCalendarCore::Calendar::Ptr tempCalendar( new KCalendarCore::MemoryCalendar( QTimeZone::systemTimeZone()) );
+    KCalendarCore::ICalFormat icf;
     icf.fromString(tempCalendar, aIString);
-    KCalCore::Incidence::List lst = tempCalendar->rawIncidences();
+    KCalendarCore::Incidence::List lst = tempCalendar->rawIncidences();
 
     if(!lst.isEmpty()) {
-        pInci = KCalCore::Incidence::Ptr ( lst[0]->clone() );
-        addIncidenceTimeZones(tempCalendar, pInci);
+        pInci = KCalendarCore::Incidence::Ptr ( lst[0]->clone() );
     } else {
     	LOG_WARNING("ICal to Incidence Conversion Failed ");
     }
@@ -375,7 +331,7 @@ KCalCore::Incidence::Ptr CalendarBackend::getIncidenceFromIcal( const QString& a
     return pInci;
 }
 
-bool CalendarBackend::addIncidence( KCalCore::Incidence::Ptr aInci, bool commitNow )
+bool CalendarBackend::addIncidence( KCalendarCore::Incidence::Ptr aInci, bool commitNow )
 {
     FUNCTION_CALL_TRACE;
 
@@ -385,9 +341,9 @@ bool CalendarBackend::addIncidence( KCalCore::Incidence::Ptr aInci, bool commitN
 
     switch(aInci->type())
     {
-        case KCalCore::Incidence::TypeEvent:
+        case KCalendarCore::Incidence::TypeEvent:
             {
-                KCalCore::Event::Ptr event = aInci.staticCast<KCalCore::Event>();
+                KCalendarCore::Event::Ptr event = aInci.staticCast<KCalendarCore::Event>();
                 if(!iCalendar->addEvent(event, iNotebookStr))
                 {
                     LOG_WARNING("Could not add event");
@@ -395,9 +351,9 @@ bool CalendarBackend::addIncidence( KCalCore::Incidence::Ptr aInci, bool commitN
                 }
             }
             break;
-        case KCalCore::Incidence::TypeTodo:
+        case KCalendarCore::Incidence::TypeTodo:
             {
-                KCalCore::Todo::Ptr todo = aInci.staticCast<KCalCore::Todo>();
+                KCalendarCore::Todo::Ptr todo = aInci.staticCast<KCalendarCore::Todo>();
                 if(!iCalendar->addTodo(todo, iNotebookStr))
                 {
                     LOG_WARNING("Could not add todo");
@@ -448,7 +404,7 @@ bool CalendarBackend::commitChanges()
     return changesCommitted;
 }
 
-bool CalendarBackend::modifyIncidence( KCalCore::Incidence::Ptr aInci, const QString& aUID, bool commitNow )
+bool CalendarBackend::modifyIncidence( KCalendarCore::Incidence::Ptr aInci, const QString& aUID, bool commitNow )
 {
 	FUNCTION_CALL_TRACE;
 
@@ -456,7 +412,7 @@ bool CalendarBackend::modifyIncidence( KCalCore::Incidence::Ptr aInci, const QSt
         return false;
     }
 
-    KCalCore::Incidence::Ptr origInci = getIncidence ( aUID );
+    KCalendarCore::Incidence::Ptr origInci = getIncidence ( aUID );
 
     if( !origInci ) {
         LOG_WARNING("Item with UID" << aUID << "does not exist. Cannot modify");
@@ -489,7 +445,7 @@ CalendarBackend::ErrorStatus CalendarBackend::deleteIncidence( const QString& aU
         errorCode = CalendarBackend::STATUS_GENERIC_ERROR;
     }
 
-    KCalCore::Incidence::Ptr incidence = getIncidence( aUID );
+    KCalendarCore::Incidence::Ptr incidence = getIncidence( aUID );
     
     if( !incidence ) {
         LOG_WARNING( "Could not find incidence to delete with UID" << aUID );
@@ -510,7 +466,7 @@ CalendarBackend::ErrorStatus CalendarBackend::deleteIncidence( const QString& aU
     return errorCode;
 }
 
-bool CalendarBackend::modifyIncidence( KCalCore::Incidence::Ptr aIncidence, KCalCore::Incidence::Ptr aIncidenceData )
+bool CalendarBackend::modifyIncidence( KCalendarCore::Incidence::Ptr aIncidence, KCalendarCore::Incidence::Ptr aIncidenceData )
 {
     FUNCTION_CALL_TRACE;
 
@@ -526,10 +482,10 @@ bool CalendarBackend::modifyIncidence( KCalCore::Incidence::Ptr aIncidence, KCal
         return false;
     }
 
-    if( aIncidence->type() == KCalCore::Incidence::TypeEvent || aIncidence->type() == KCalCore::Incidence::TypeTodo )
+    if( aIncidence->type() == KCalendarCore::Incidence::TypeEvent || aIncidence->type() == KCalendarCore::Incidence::TypeTodo )
     {
-	KCalCore::IncidenceBase::Ptr inc = aIncidence;
-	KCalCore::IncidenceBase::Ptr data = aIncidenceData;
+    KCalendarCore::IncidenceBase::Ptr inc = aIncidence;
+    KCalendarCore::IncidenceBase::Ptr data = aIncidenceData;
         *inc = *data;    
     }
     else {

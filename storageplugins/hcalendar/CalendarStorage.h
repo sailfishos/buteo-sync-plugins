@@ -138,13 +138,13 @@ public:
 
 private:
 
-    KCalCore::Incidence::Ptr generateIncidence( Buteo::StorageItem& aItem );
+    KCalendarCore::Incidence::Ptr generateIncidence( Buteo::StorageItem& aItem );
 
-    void retrieveItems( KCalCore::Incidence::List& aIncidences, QList<Buteo::StorageItem*>& aItems );
+    void retrieveItems( KCalendarCore::Incidence::List& aIncidences, QList<Buteo::StorageItem*>& aItems );
 
-    Buteo::StorageItem* retrieveItem( KCalCore::Incidence::Ptr& aIncidence );
+    Buteo::StorageItem* retrieveItem( KCalendarCore::Incidence::Ptr& aIncidence );
 
-    void retrieveIds( KCalCore::Incidence::List& aIncidences, QList<QString>& aIds );
+    void retrieveIds( KCalendarCore::Incidence::List& aIncidences, QList<QString>& aIds );
 
     QDateTime normalizeTime( const QDateTime& aTime ) const;
 
