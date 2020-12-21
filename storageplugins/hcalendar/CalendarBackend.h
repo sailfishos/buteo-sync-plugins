@@ -30,11 +30,11 @@
 
 //calendar related includes
 #include "extendedcalendar.h"
-#include "memorycalendar.h"
 #include "notebook.h"
 #include <sqlitestorage.h>
-#include "vcalformat.h"
-#include "icalformat.h"
+#include <KCalendarCore/MemoryCalendar>
+#include <KCalendarCore/VCalFormat>
+#include <KCalendarCore/ICalFormat>
 
 static const QString ID_SEPARATOR("::");  
 //! \brief Calendar implementation for synchronization
@@ -67,51 +67,51 @@ public:
     //! \brief returns all incidences inside this calendar
     // @param aIncidences List of incidences
     // @return True on success, otherwise false
-    bool getAllIncidences( KCalCore::Incidence::List& aIncidences );
+    bool getAllIncidences( KCalendarCore::Incidence::List& aIncidences );
 
     //! \brief returns all new items after the date
     // @param aIncidences List of incidences
     // @param aTime Timestamp
     // @return True on success, otherwise false
-    bool getAllNew( KCalCore::Incidence::List& aIncidences, const QDateTime& aTime );
+    bool getAllNew( KCalendarCore::Incidence::List& aIncidences, const QDateTime& aTime );
 
     //! \brief returns all modified items after the date
     // @param aIncidences List of incidences
     // @param aTime Timestamp
     // @return True on success, otherwise false
-    bool getAllModified( KCalCore::Incidence::List& aIncidences, const QDateTime& aTime );
+    bool getAllModified( KCalendarCore::Incidence::List& aIncidences, const QDateTime& aTime );
 
     //! \brief returns all deleted items after the date
     // @param aIncidences List of incidences
     // @param aTime Timestamp
     // @return True on success, otherwise false
-    bool getAllDeleted( KCalCore::Incidence::List& aIncidences, const QDateTime& aTime );
+    bool getAllDeleted( KCalendarCore::Incidence::List& aIncidences, const QDateTime& aTime );
 
     //! \brief Get incidence based on uid.
     // Caller must not free the returned pointer.
     // \param aUID Item UID
     // \return The incidence (should not be freed by caller).
-    KCalCore::Incidence::Ptr getIncidence( const QString& aUID );
+    KCalendarCore::Incidence::Ptr getIncidence( const QString& aUID );
 
     //! \brief returns VCalendar representation of incidence
     // \param pInci Incidence
-    QString getVCalString( KCalCore::Incidence::Ptr aInci );
+    QString getVCalString( KCalendarCore::Incidence::Ptr aInci );
 
     //! \brief returns ICalendar representation of incidence
     // \param pInci Incidence
-    QString getICalString( KCalCore::Incidence::Ptr aInci );
+    QString getICalString( KCalendarCore::Incidence::Ptr aInci );
 
     //! \brief get Incidence from VCalendar string
     // Caller has to free the returned incidence after user.
     // \param aVString Incidence representation in VCalendar format.
     // \return Incidence pointer
-    KCalCore::Incidence::Ptr getIncidenceFromVcal( const QString& aVString );
+    KCalendarCore::Incidence::Ptr getIncidenceFromVcal( const QString& aVString );
 
     //! \brief get Incidence from ICalendar string
     // Caller has to free the returned incidence after user.
     // \param aIString Incidence representation in ICalendar format.
     // \return Incidence pointer
-    KCalCore::Incidence::Ptr getIncidenceFromIcal( const QString& aIString );
+    KCalendarCore::Incidence::Ptr getIncidenceFromIcal( const QString& aIString );
 
     //! \brief Add the incidence to calendar
     //
@@ -121,7 +121,7 @@ public:
     // \param aInci Incidence to be added.
     // \param commitNow - indicates if we have to commit to the backend immediately
     // \return true if addition is success, otherwise false
-    bool addIncidence( KCalCore::Incidence::Ptr aInci, bool commitNow = true );
+    bool addIncidence( KCalendarCore::Incidence::Ptr aInci, bool commitNow = true );
 
     //! \brief Tell Calendar to commit changes to their db
     /// \return true if committed succesfully, false otherwise
@@ -135,7 +135,7 @@ public:
     // \param aInci Incidence to be modified
     // \param aUID UID of item
     // \return true if modification was success, otherwise false
-    bool modifyIncidence( KCalCore::Incidence::Ptr aInci, const QString& aUID, bool commitNow = true );
+    bool modifyIncidence( KCalendarCore::Incidence::Ptr aInci, const QString& aUID, bool commitNow = true );
 
     //! \brief delete the incidence
     // \param aUID id of the incidence to be deleted
@@ -143,11 +143,9 @@ public:
     ErrorStatus deleteIncidence( const QString& aUID);
 
 private:
-    bool modifyIncidence( KCalCore::Incidence::Ptr aIncidence, KCalCore::Incidence::Ptr aIncidenceData );
+    bool modifyIncidence( KCalendarCore::Incidence::Ptr aIncidence, KCalendarCore::Incidence::Ptr aIncidenceData );
 
-    void filterIncidences( KCalCore::Incidence::List& aList );
-
-    void addIncidenceTimeZones(const KCalCore::Calendar::Ptr &aCalendar, const KCalCore::Incidence::Ptr &pInci);
+    void filterIncidences( KCalendarCore::Incidence::List& aList );
 
     QString                 iNotebookStr;
     mKCal::ExtendedCalendar::Ptr  iCalendar;

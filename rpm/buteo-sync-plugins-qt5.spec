@@ -22,7 +22,7 @@ BuildRequires: pkgconfig(buteosyncfw5) >= 0.7.7
 BuildRequires: pkgconfig(qtcontacts-sqlite-qt5-extensions)
 BuildRequires: pkgconfig(contactcache-qt5) >= 0.0.76
 BuildRequires: pkgconfig(libmkcal-qt5)
-BuildRequires: pkgconfig(libkcalcoren-qt5)
+BuildRequires: pkgconfig(KF5CalendarCore)
 BuildRequires: pkgconfig(sqlite3)
 BuildRequires: doxygen
 

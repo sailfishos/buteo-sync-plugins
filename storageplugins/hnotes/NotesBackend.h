@@ -23,8 +23,7 @@
 #ifndef NOTESBACKEND_H
 #define NOTESBACKEND_H
 
-#include <QString>
-#include <incidence.h>
+#include <KCalendarCore/Incidence>
 #include <extendedcalendar.h>
 #include <extendedstorage.h>
 
@@ -164,11 +163,11 @@ protected:
 
 private:
 
-    void retrieveNoteItems( KCalCore::Incidence::List& aIncidences, QList<Buteo::StorageItem*>& aItems );
+    void retrieveNoteItems( KCalendarCore::Incidence::List& aIncidences, QList<Buteo::StorageItem*>& aItems );
 
-    void retrieveNoteIds( KCalCore::Incidence::List& aIncidences, QList<QString>& aIds );
+    void retrieveNoteIds( KCalendarCore::Incidence::List& aIncidences, QList<QString>& aIds );
 
-    void filterIncidences( KCalCore::Incidence::List& aIncidences );
+    void filterIncidences( KCalendarCore::Incidence::List& aIncidences );
 
 
     QString                 iNotebookName;

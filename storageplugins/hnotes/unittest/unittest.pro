@@ -54,7 +54,7 @@ QT += testlib
 QT -= gui
 CONFIG += link_pkgconfig
 
-PKGCONFIG = buteosyncfw5 libkcalcoren-qt5 libmkcal-qt5
+PKGCONFIG = buteosyncfw5 KF5CalendarCore libmkcal-qt5
 LIBS += -lsyncmlcommon5
 
 QMAKE_CLEAN += $(OBJECTS_DIR)/*.gcda $(OBJECTS_DIR)/*.gcno
