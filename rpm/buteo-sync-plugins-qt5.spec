@@ -1,5 +1,5 @@
 Name: buteo-sync-plugins-qt5
-Version: 0.8.28
+Version: 0.8.29
 Release: 1
 Summary: Synchronization plugins
 URL: https://git.sailfishos.org/mer-core/buteo-sync-plugins
