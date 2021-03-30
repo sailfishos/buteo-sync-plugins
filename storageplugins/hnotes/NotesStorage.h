@@ -2,6 +2,7 @@
  * This file is part of buteo-sync-plugins package
  *
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+ * Copyright (C) 2013 - 2021 Jolla Ltd.
  *
  * Contact: Sateesh Kavuri <sateesh.kavuri@nokia.com>
  *
@@ -26,6 +27,7 @@
 #include "NotesBackend.h"
 
 #include <buteosyncfw5/StoragePlugin.h>
+#include <buteosyncfw5/StoragePluginLoader.h>
 #include <buteosyncfw5/ProfileEngineDefs.h>
 
 /*! \brief Harmattan notes storage plugin
@@ -151,17 +153,19 @@ private:
     bool            iCommitNow;
 };
 
-/*! \brief Creates notes storage plugin
- *
- * @param aPluginName Human-readable name for plugin
- * @return Notes storage plugin instance
- */
-extern "C" Buteo::StoragePlugin* createPlugin( const QString& aPluginName );
+class NotesStoragePluginLoader : public Buteo::StoragePluginLoader
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "com.buteo.plugins.storage.NotesStoragePluginLoader")
+    Q_INTERFACES(Buteo::StoragePluginLoader)
 
-/*! \brief Destroys notes storage plugin
- *
- * @param aStorage Notes storage plugin instance to destroy
- */
-extern "C" void destroyPlugin( Buteo::StoragePlugin* aStorage );
+public:
+    /*! \brief Creates notes storage plugin
+     *
+     * @param aPluginName Human-readable name for plugin
+     * @return Notes storage plugin instance
+     */
+    Buteo::StoragePlugin* createPlugin(const QString& aPluginName) override;
+};
 
 #endif  //  NOTESSTORAGE_H

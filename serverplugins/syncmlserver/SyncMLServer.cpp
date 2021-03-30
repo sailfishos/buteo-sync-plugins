@@ -30,15 +30,14 @@
 #include "SyncMLConfig.h"
 #include "DeviceInfo.h"
 
-extern "C" SyncMLServer* createPlugin(const QString& pluginName,
-        const Buteo::SyncProfile& profile,
-        Buteo::PluginCbInterface *cbInterface) {
+Buteo::ServerPlugin* SyncMLServerLoader::createServerPlugin(
+        const QString& pluginName,
+        const Buteo::Profile& profile,
+        Buteo::PluginCbInterface* cbInterface)
+{
     return new SyncMLServer(pluginName, profile, cbInterface);
 }
 
-extern "C" void destroyPlugin(SyncMLServer *server) {
-    delete server;
-}
 
 SyncMLServer::SyncMLServer (const QString& pluginName,
                             const Buteo::Profile profile,

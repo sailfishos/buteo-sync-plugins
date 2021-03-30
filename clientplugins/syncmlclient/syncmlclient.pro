@@ -18,31 +18,9 @@ VER_PAT = 0
 HEADERS += SyncMLClient.h BTConnection.h
 SOURCES += SyncMLClient.cpp BTConnection.cpp
 
-PLUGIN_DLL {
-    message("building syncml-client as in-process plugin")
-    TEMPLATE = lib
-    CONFIG += plugin
-    target.path = $$[QT_INSTALL_LIBS]/buteo-plugins-qt5
-}
-
-PLUGIN_EXE {
-    message("building syncml-client as out-of-process plugin")
-    TEMPLATE = app
-    target.path = $$[QT_INSTALL_LIBS]/buteo-plugins-qt5/oopp
-
-    DEFINES += "CLASSNAME=SyncMLClient"
-    DEFINES += CLASSNAME_H=\\\"SyncMLClient.h\\\"
-    DEFINES += CLIENT_PLUGIN
-
-    INCLUDE_DIR = $$system(pkg-config --cflags buteosyncfw5|cut -f2 -d'I')
-    HEADERS += $$INCLUDE_DIR/ButeoPluginIfaceAdaptor.h \
-               $$INCLUDE_DIR/PluginCbImpl.h \
-               $$INCLUDE_DIR/PluginServiceObj.h
-    SOURCES += $$INCLUDE_DIR/ButeoPluginIfaceAdaptor.cpp \
-               $$INCLUDE_DIR/PluginCbImpl.cpp \
-               $$INCLUDE_DIR/PluginServiceObj.cpp \
-               $$INCLUDE_DIR/plugin_main.cpp
-}
+TEMPLATE = lib
+CONFIG += plugin
+target.path = $$[QT_INSTALL_LIBS]/buteo-plugins-qt5/oopp
 
 OTHER_FILES += xml/* \
                xml/sync/* \

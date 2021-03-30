@@ -28,6 +28,7 @@
 #include "SyncMLStorageProvider.h"
 
 #include <buteosyncfw5/ServerPlugin.h>
+#include <buteosyncfw5/SyncPluginLoader.h>
 #include <buteosyncfw5/SyncCommonDefs.h>
 #include <buteosyncfw5/SyncResults.h>
 #include <buteosyncml5/StorageProvider.h>
@@ -163,5 +164,26 @@ private:
       */
     bool                            mUSBActive;
 };
+
+class SyncMLServerLoader : public Buteo::SyncPluginLoader
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "com.buteo.plugins.sync.SyncMLServerLoader")
+    Q_INTERFACES(Buteo::SyncPluginLoader)
+
+public:
+    /*! \brief Creates SyncML server plugin
+     *
+     * @param aPluginName Name of this server plugin
+     * @param aProfile Profile to use
+     * @param aCbInterface Pointer to the callback interface
+     * @return Server plugin on success, otherwise NULL
+     */
+    Buteo::ServerPlugin* createServerPlugin(const QString& pluginName,
+                                            const Buteo::Profile& profile,
+                                            Buteo::PluginCbInterface* cbInterface) override;
+};
+
+
 
 #endif // SYNCMLSERVER_H

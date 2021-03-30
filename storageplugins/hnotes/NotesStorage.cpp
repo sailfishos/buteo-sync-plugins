@@ -2,6 +2,7 @@
  * This file is part of buteo-sync-plugins package
  *
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+ * Copyright (C) 2013 - 2021 Jolla Ltd.
  *
  * Contact: Sateesh Kavuri <sateesh.kavuri@nokia.com>
  *
@@ -46,16 +47,6 @@ const char* DEFAULT_TYPE            = "text/plain";
 const char* DEFAULT_TYPE_VERSION    = "1.0";
 const char* DEFAULT_NOTEBOOK        = "Personal";
 const char* DEFAULT_NOTEBOOK_NAME   = "myNotebook";
-
-extern "C" Buteo::StoragePlugin* createPlugin( const QString& aPluginName )
-{
-    return new NotesStorage( aPluginName );
-}
-
-extern "C" void destroyPlugin( Buteo::StoragePlugin* aStorage )
-{
-    delete aStorage;
-}
 
 
 NotesStorage::NotesStorage( const QString& aPluginName ) : Buteo::StoragePlugin( aPluginName ), iCommitNow( true )
@@ -311,4 +302,10 @@ QByteArray NotesStorage::getCTCaps( const QString& aFilename ) const
 
     return ctCaps;
 
+}
+
+
+Buteo::StoragePlugin* NotesStoragePluginLoader::createPlugin(const QString& aPluginName)
+{
+    return new NotesStorage(aPluginName);
 }

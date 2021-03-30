@@ -27,6 +27,7 @@
 #include "BTConnection.h"
 #include "SyncMLStorageProvider.h"
 #include <ClientPlugin.h>
+#include <SyncPluginLoader.h>
 #include <SyncResults.h>
 #include <buteosyncml5/SyncAgent.h>
 
@@ -218,21 +219,23 @@ private:
     SignOn::AuthSession*        iAuthSession;
 };
 
-/*! \brief Creates SyncML client plugin
- *
- * @param aPluginName Name of this client plugin
- * @param aProfile Profile to use
- * @param aCbInterface Pointer to the callback interface
- * @return Client plugin on success, otherwise NULL
- */
-extern "C" SyncMLClient* createPlugin( const QString& aPluginName,
-                                       const Buteo::SyncProfile& aProfile,
-                                       Buteo::PluginCbInterface *aCbInterface );
+class SyncMLClientLoader : public Buteo::SyncPluginLoader
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "com.buteo.plugins.sync.SyncMLClientLoader")
+    Q_INTERFACES(Buteo::SyncPluginLoader)
 
-/*! \brief Destroys SyncML client plugin
- *
- * @param aServer SyncML client plugin instance to destroy
- */
-extern "C" void destroyPlugin( SyncMLClient *aClient );
+public:
+    /*! \brief Creates SyncML client plugin
+     *
+     * @param aPluginName Name of this client plugin
+     * @param aProfile Profile to use
+     * @param aCbInterface Pointer to the callback interface
+     * @return Client plugin on success, otherwise NULL
+     */
+    Buteo::ClientPlugin* createClientPlugin(const QString& pluginName,
+                                            const Buteo::SyncProfile& profile,
+                                            Buteo::PluginCbInterface* cbInterface) override;
+};
 
 #endif  //  SYNCMLCLIENT_H

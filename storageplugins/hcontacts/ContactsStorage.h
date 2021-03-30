@@ -2,6 +2,7 @@
  * This file is part of buteo-sync-plugins package
  *
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+ * Copyright (C) 2013 - 2021 Jolla Ltd.
  *
  * Contact: Sateesh Kavuri <sateesh.kavuri@nokia.com>
  *
@@ -27,6 +28,7 @@
 #include <QMap>
 
 #include "StoragePlugin.h"
+#include "StoragePluginLoader.h"
 #include "ContactsBackend.h"
 #include "buteosyncfw5/DeletedItemsIdStorage.h"
 
@@ -235,11 +237,15 @@ private:
     QList<QString>              iFreshItems;
 };
 
-/// \brief returns a pointer to new contact storage object
-extern "C" Buteo::StoragePlugin*  createPlugin(const QString& aPluginName);
+class ContactsStoragePluginLoader : public Buteo::StoragePluginLoader
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "com.buteo.plugins.storage.ContactsStoragePluginLoader")
+    Q_INTERFACES(Buteo::StoragePluginLoader)
 
-/// \brief destroy contact storage object
-extern "C" void destroyPlugin(Buteo::StoragePlugin* storage);
+public:
+    Buteo::StoragePlugin* createPlugin(const QString& aPluginName) override;
+};
 
 #endif //CONTACT_STORAGE_HEADER_1717
 

@@ -2,6 +2,7 @@
  * This file is part of buteo-sync-plugins package
  *
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+ * Copyright (C) 2013 - 2021 Jolla Ltd.
  *
  * Contact: Sateesh Kavuri <sateesh.kavuri@nokia.com>
  *
@@ -30,6 +31,7 @@
 #include "CalendarBackend.h"
 
 #include <buteosyncfw5/StoragePlugin.h>
+#include <buteosyncfw5/StoragePluginLoader.h>
 #include <buteosyncfw5/ProfileEngineDefs.h>
 
 enum STORAGE_TYPE {VCALENDAR_FORMAT,ICALENDAR_FORMAT};
@@ -159,18 +161,21 @@ private:
 
 };
 
-/*! \brief Creates calendar storage plugin
- *
- * @param aPluginName Human-readable name for plugin
- * @return Calendar storage plugin instance
- */
-extern "C" Buteo::StoragePlugin* createPlugin( const QString& aPluginName );
 
-/*! \brief Destroys calendar storage plugin
- *
- * @param aStorage Calendar storage plugin instance to destroy
- */
-extern "C" void destroyPlugin( Buteo::StoragePlugin *aStorage );
+class CalendarStoragePluginLoader : public Buteo::StoragePluginLoader
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "com.buteo.plugins.storage.CalendarStoragePluginLoader")
+    Q_INTERFACES(Buteo::StoragePluginLoader)
+
+public:
+    /*! \brief Creates calendar storage plugin
+     *
+     * @param aPluginName Human-readable name for plugin
+     * @return Calendar storage plugin instance
+     */
+    Buteo::StoragePlugin* createPlugin(const QString& aPluginName) override;
+};
 
 #endif // CALENDARSTORAGE_H
 
