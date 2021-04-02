@@ -18,7 +18,7 @@ BuildRequires: pkgconfig(openobex)
 BuildRequires: pkgconfig(accounts-qt5)
 BuildRequires: pkgconfig(libsignon-qt5)
 BuildRequires: pkgconfig(buteosyncml5)
-BuildRequires: pkgconfig(buteosyncfw5) >= 0.7.7
+BuildRequires: pkgconfig(buteosyncfw5) >= 0.10.0
 BuildRequires: pkgconfig(qtcontacts-sqlite-qt5-extensions)
 BuildRequires: pkgconfig(contactcache-qt5) >= 0.0.76
 BuildRequires: pkgconfig(libmkcal-qt5)
@@ -96,7 +96,7 @@ Requires: %{name} = %{version}
 
 
 %build
-%qmake5 "VERSION=%{version}" "CONFIG+=PLUGIN_EXE"
+%qmake5 "VERSION=%{version}"
 make %{?_smp_mflags}
 
 

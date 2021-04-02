@@ -44,15 +44,15 @@
 const QString DEFAULTCONFIGFILE("/etc/buteo/meego-syncml-conf.xml");
 const QString EXTCONFIGFILE("/etc/buteo/ext-syncml-conf.xml");
 
-extern "C" SyncMLClient* createPlugin(const QString& aPluginName,
-		const Buteo::SyncProfile& aProfile,
-		Buteo::PluginCbInterface *aCbInterface) {
-	return new SyncMLClient(aPluginName, aProfile, aCbInterface);
+
+Buteo::ClientPlugin* SyncMLClientLoader::createClientPlugin(
+        const QString& pluginName,
+        const Buteo::SyncProfile& profile,
+        Buteo::PluginCbInterface* cbInterface)
+{
+    return new SyncMLClient(pluginName, profile, cbInterface);
 }
 
-extern "C" void destroyPlugin(SyncMLClient *aClient) {
-	delete aClient;
-}
 
 SyncMLClient::SyncMLClient(const QString& aPluginName,
 		const Buteo::SyncProfile& aProfile,

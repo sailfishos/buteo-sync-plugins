@@ -2,6 +2,7 @@
  * This file is part of buteo-sync-plugins package
  *
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+ * Copyright (C) 2013 - 2021 Jolla Ltd.
  *
  * Contact: Sateesh Kavuri <sateesh.kavuri@nokia.com>
  *
@@ -34,16 +35,6 @@
 const char* CTCAPSFILENAME11 = "CTCaps_contacts_11.xml";
 const char* CTCAPSFILENAME12 = "CTCaps_contacts_12.xml";
 
-
-extern "C" Buteo::StoragePlugin*  createPlugin(const QString& aPluginName)
-{
-    return new ContactStorage(aPluginName);
-}
-
-extern "C" void destroyPlugin(Buteo::StoragePlugin* storage)
-{
-    delete storage;
-}
 
 ContactStorage::ContactStorage(const QString& aPluginName)
  : Buteo::StoragePlugin(aPluginName), iBackend( 0 )
@@ -842,3 +833,10 @@ SimpleItem* ContactStorage::convertVcardToStorageItem(const QContactLocalId aIte
 
     return storageItem;
 }
+
+
+Buteo::StoragePlugin* ContactsStoragePluginLoader::createPlugin(const QString& aPluginName)
+{
+    return new ContactStorage(aPluginName);
+}
+

@@ -31,31 +31,10 @@ HEADERS += SyncMLServer.h\
 
 OTHER_FILES += xml/*
 
-PLUGIN_DLL {
-    message("building syncml-server as in-process plugin")
-    TEMPLATE = lib
-    CONFIG += plugin
-    DEFINES += SYNCMLSERVER_LIBRARY
-    target.path = $$[QT_INSTALL_LIBS]/buteo-plugins-qt5
-}
-
-PLUGIN_EXE {
-    message("building syncml-server as out-of-process plugin")
-    TEMPLATE = app
-    target.path = $$[QT_INSTALL_LIBS]/buteo-plugins-qt5/oopp/
-    DEFINES += "CLASSNAME=SyncMLServer"
-    DEFINES += CLASSNAME_H=\\\"SyncMLServer.h\\\"
-    DEFINES += GLIB_FD_WATCH
-    DEFINES += SYNCMLSERVER_LIBRARY
-    INCLUDE_DIR = $$system(pkg-config --cflags buteosyncfw5|cut -f2 -d'I')
-    SOURCES += $$INCLUDE_DIR/ButeoPluginIfaceAdaptor.cpp \
-        $$INCLUDE_DIR/PluginCbImpl.cpp \
-        $$INCLUDE_DIR/PluginServiceObj.cpp \
-        $$INCLUDE_DIR/plugin_main.cpp
-    HEADERS += $$INCLUDE_DIR/ButeoPluginIfaceAdaptor.h \
-        $$INCLUDE_DIR/PluginCbImpl.h \
-        $$INCLUDE_DIR/PluginServiceObj.h
-}
+TEMPLATE = lib
+CONFIG += plugin
+target.path = $$[QT_INSTALL_LIBS]/buteo-plugins-qt5/oopp/
+DEFINES += SYNCMLSERVER_LIBRARY
 
 sync.path = /etc/buteo/profiles/server
 sync.files = xml/syncml.xml

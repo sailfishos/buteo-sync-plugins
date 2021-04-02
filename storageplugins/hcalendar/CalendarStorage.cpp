@@ -2,6 +2,7 @@
  * This file is part of buteo-sync-plugins package
  *
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+ * Copyright (C) 2013 - 2021 Jolla Ltd.
  *
  * Contact: Sateesh Kavuri <sateesh.kavuri@nokia.com>
  *
@@ -39,15 +40,6 @@
 const char* CTCAPSFILENAME11 = "CTCaps_calendar_11.xml";
 const char* CTCAPSFILENAME12 = "CTCaps_calendar_12.xml";
 
-extern "C" Buteo::StoragePlugin* createPlugin( const QString& aPluginName )
-{
-    return new CalendarStorage( aPluginName );
-}
-
-extern "C" void destroyPlugin( Buteo::StoragePlugin *aStorage)
-{
-    delete aStorage;
-}
 
 CalendarStorage::CalendarStorage( const QString& aPluginName )
 : Buteo::StoragePlugin(aPluginName)
@@ -571,4 +563,10 @@ CalendarStorage::OperationStatus CalendarStorage::mapErrorStatus\
             break;
     }
     return iStorageStatus;
+}
+
+
+Buteo::StoragePlugin* CalendarStoragePluginLoader::createPlugin(const QString& aPluginName)
+{
+    return new CalendarStorage(aPluginName);
 }
