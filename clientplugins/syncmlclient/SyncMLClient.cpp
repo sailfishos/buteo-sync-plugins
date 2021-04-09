@@ -235,7 +235,7 @@ void SyncMLClient::syncFinished(DataSync::SyncState aState) {
         case DataSync::UNSUPPORTED_STORAGE_TYPE:
         {
             generateResults( false );
-            emit error( getProfileName(), "", aState);
+            emit error(getProfileName(), "", Buteo::SyncResults::ABORTED);
             break;
         }
         case DataSync::SUSPENDED:
@@ -598,7 +598,8 @@ void SyncMLClient::closeConfig() {
 
 }
 
-Buteo::SyncResults SyncMLClient::getSyncResults() const {
+Buteo::SyncResults SyncMLClient::getSyncResults() const
+{
 	FUNCTION_CALL_TRACE;
 
 	return iResults;
