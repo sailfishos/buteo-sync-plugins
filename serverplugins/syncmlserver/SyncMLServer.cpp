@@ -460,7 +460,7 @@ SyncMLServer::handleSyncFinished (DataSync::SyncState state)
     {
         generateResults (true);
         errorStatus = false;
-        emit success (getProfileName (), QString::number (state));
+        emit success(getProfileName(), QString::number(state));
         break;
     }
 
@@ -470,7 +470,7 @@ SyncMLServer::handleSyncFinished (DataSync::SyncState state)
     case DataSync::INVALID_SYNCML_MESSAGE:
     {
         generateResults (false);
-        emit error (getProfileName (), QString::number (state), 0);
+        emit error(getProfileName(), QString::number(state), Buteo::SyncResults::INTERNAL_ERROR);
         break;
     }
 
@@ -479,7 +479,7 @@ SyncMLServer::handleSyncFinished (DataSync::SyncState state)
         LOG_CRITICAL ("Unexpected state change");
         generateResults (false);
 
-        emit error (getProfileName (), QString::number (state), 0);
+        emit error(getProfileName(), QString::number(state), Buteo::SyncResults::INTERNAL_ERROR);
         break;
     }
     }

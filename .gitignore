@@ -1,5 +1,8 @@
 Makefile
 *.so*
+*.o
+*.gcno
+moc_*.cpp
 *.list
 *.prl
 *.tag
