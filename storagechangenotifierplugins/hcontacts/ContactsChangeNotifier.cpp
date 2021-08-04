@@ -7,7 +7,7 @@ const QString DEFAULT_CONTACTS_MANAGER("tracker");
 ContactsChangeNotifier::ContactsChangeNotifier() :
 iDisabled(true)
 {
-    FUNCTION_CALL_TRACE;
+    FUNCTION_CALL_TRACE(lcSyncMLContactChangeTrace);
     iManager = new QContactManager("org.nemomobile.contacts.sqlite");
 }
 
@@ -35,7 +35,7 @@ void ContactsChangeNotifier::enable()
 
 void ContactsChangeNotifier::onContactsAdded(const QList<QContactId>& ids)
 {
-    FUNCTION_CALL_TRACE;
+    FUNCTION_CALL_TRACE(lcSyncMLContactChangeTrace);
     if(ids.count())
     {
         QList<QContact> contacts = iManager->contacts(ids);
@@ -45,12 +45,12 @@ void ContactsChangeNotifier::onContactsAdded(const QList<QContactId>& ids)
 
 void ContactsChangeNotifier::onContactsRemoved(const QList<QContactId>& ids)
 {
-    FUNCTION_CALL_TRACE;
+    FUNCTION_CALL_TRACE(lcSyncMLContactChangeTrace);
     if(ids.count())
     {
         foreach(QContactId id, ids)
         {
-            LOG_DEBUG("Removed contact with id" << id);
+            qCDebug(lcSyncMLContactChange) << "Removed contact with id" << id;
         }
         emit change();
     }
@@ -58,7 +58,7 @@ void ContactsChangeNotifier::onContactsRemoved(const QList<QContactId>& ids)
 
 void ContactsChangeNotifier::onContactsChanged(const QList<QContactId>& ids)
 {
-    FUNCTION_CALL_TRACE;
+    FUNCTION_CALL_TRACE(lcSyncMLContactChangeTrace);
     if(ids.count())
     {
         QList<QContact> contacts = iManager->contacts(ids);
@@ -68,7 +68,12 @@ void ContactsChangeNotifier::onContactsChanged(const QList<QContactId>& ids)
 
 void ContactsChangeNotifier::disable()
 {
-    FUNCTION_CALL_TRACE;
+    FUNCTION_CALL_TRACE(lcSyncMLContactChangeTrace);
     iDisabled = true;
     QObject::disconnect(iManager, 0, this, 0);
 }
+
+
+Q_LOGGING_CATEGORY(lcSyncMLContactChange, "buteo.syncml.plugin.contactchange", QtWarningMsg)
+Q_LOGGING_CATEGORY(lcSyncMLContactChangeTrace, "buteo.syncml.plugin.contactchange.trace", QtWarningMsg)
+
