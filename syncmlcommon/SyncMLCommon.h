@@ -24,6 +24,8 @@
 #ifndef SYNCMLCOMMON_H
 #define SYNCMLCOMMON_H
 
+#include <QLoggingCategory>
+
 const QString PROPS_FALSE                               = "false";
 const QString PROPS_TRUE                                = "true";
 
@@ -89,5 +91,9 @@ const QString SYNCML11                = "SyncML11";
 const QString SYNCML12                = "SyncML12";
 
 const QString PROF_HTTP_XHEADERS      = "http_xheaders";
+
+
+Q_DECLARE_LOGGING_CATEGORY(lcSyncMLPlugin)
+
 
 #endif  //  SYNCMLCOMMON_H

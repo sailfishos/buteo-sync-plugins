@@ -24,8 +24,6 @@
 #ifndef SYNCMLSTORAGEPROVIDER_H
 #define SYNCMLSTORAGEPROVIDER_H
 
-#include <LogMacros.h>
-
 #include <buteosyncml5/StorageProvider.h>
 
 namespace Buteo {

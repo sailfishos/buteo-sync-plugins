@@ -1,9 +1,7 @@
 /*
  * This file is part of buteo-sync-plugins package
  *
- * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
- *
- * Contact: Sateesh Kavuri <sateesh.kavuri@nokia.com>
+ * Copyright (C) 2021 Jolla Ltd.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -20,27 +18,9 @@
  * 02110-1301 USA
  *
  */
-#include "SimpleItemTest.h"
 
-void SimpleItemTest::initTestCase()
-{
-	iSimple = new SimpleItem();
-}
-void SimpleItemTest::cleanupTestCase()
-{
-	QVERIFY(iSimple);
-	delete iSimple;
-	
-	iSimple = 0;
-}
-void SimpleItemTest::testReadWriteSize()
-{
-	QByteArray byte("SimpleItem");
-	QByteArray tempByte;
-	QCOMPARE(iSimple->write(5, byte), true);
-	QCOMPARE(iSimple->getSize(), (qint64)15);
-	QCOMPARE(iSimple->read(5, -1, tempByte), true);
-	QVERIFY(tempByte.contains("SimpleItem"));
-	QCOMPARE(iSimple->resize(6), true);
-	QCOMPARE(iSimple->getSize(), (qint64)6);
-}
+#include "SyncMLPluginLogging.h"
+
+Q_LOGGING_CATEGORY(lcSyncMLPlugin, "buteo.syncml.plugin", QtWarningMsg)
+Q_LOGGING_CATEGORY(lcSyncMLPluginTrace, "buteo.syncml.plugin.trace", QtWarningMsg)
+

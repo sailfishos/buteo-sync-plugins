@@ -24,7 +24,6 @@
 #ifndef ITEMADAPTER_H
 #define ITEMADAPTER_H
 
-#include <LogMacros.h>
 #include <buteosyncml5/SyncItem.h>
 
 namespace Buteo {

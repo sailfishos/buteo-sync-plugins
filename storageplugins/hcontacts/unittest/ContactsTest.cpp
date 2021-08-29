@@ -29,8 +29,7 @@
 #include <QVersitContactImporter>
 #include <QtTest/QtTest>
 #include <QDebug>
-#include <LogMacros.h>
-#include <Logger.h>
+#include "SyncMLPluginLogging.h"
 
 #include "ContactsStorage.h"
 #include "SimpleItem.h"
@@ -62,13 +61,11 @@ static const QByteArray modifiedData(
 // allocate all resources needed here
 void ContactsTest::initTestCase()
 {
-    Buteo::Logger::createInstance();
 }
 
 // de-allocate all resources used
 void ContactsTest::cleanupTestCase()
 {
-    Buteo::Logger::deleteInstance();
 }
 
 void ContactsTest::testSuiteSingle()
@@ -77,7 +74,7 @@ void ContactsTest::testSuiteSingle()
     props.insert(QLatin1String("Sync Target"), QLatin1String("local"));
 
     ContactStorage storage("hcontacts");
-    QVERIFY(storage.init( props )) ;
+    QVERIFY(storage.init( props ));
 
     runTestSuite( originalData, modifiedData, storage, false );
 
@@ -90,7 +87,7 @@ void ContactsTest::testSuiteBatched()
     props.insert(QLatin1String("Sync Target"), QLatin1String("local"));
 
     ContactStorage storage("hcontacts");
-    QVERIFY(storage.init( props )) ;
+    QVERIFY(storage.init( props ));
 
     runTestSuite( originalData, modifiedData, storage, true );
 
@@ -364,7 +361,7 @@ void ContactsTest::pf177715()
 
     QMap<QString, QString> props;
     ContactStorage storage("hcontacts");
-    QVERIFY(storage.init( props )) ;
+    QVERIFY(storage.init( props ));
 
     qDebug() << "Plugin init finished, took" << timer.elapsed() << "ms";
 
@@ -422,7 +419,7 @@ void ContactsTest::pf177715()
     qDebug() << "Uninitiating plugin...";
     timer.restart();
 
-    QVERIFY(storage.uninit()) ;
+    QVERIFY(storage.uninit());
 
     qDebug() << "Plugin uninit finished, took" << timer.elapsed() << "ms";
 
@@ -450,10 +447,10 @@ void ContactsTest::directAdd( const QStringList& aVCards, QContactManager& aMana
     versitReader.setDevice (&readBuf);
 
     if (!versitReader.startReading())
-            LOG_WARNING ("Error while reading vcard");
+            qCWarning(lcSyncMLPlugin) << "Error while reading vcard";
 
     if (!versitReader.waitForFinished())
-            LOG_WARNING ("Error while finishing reading vcard");
+            qCWarning(lcSyncMLPlugin) << "Error while finishing reading vcard";
 
     QList<QVersitDocument> versitDocList = versitReader.results ();
     readBuf.close();

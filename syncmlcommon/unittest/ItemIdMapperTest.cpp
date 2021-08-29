@@ -21,13 +21,11 @@
  *
  */
 #include "ItemIdMapperTest.h"
-#include "Logger.h"
 
 void ItemIdMapperTest::initTestCase()
 {
 	iMapper = new ItemIdMapper();
 	QCOMPARE(iMapper->iRecursionGuard, false);
-	//Logger::createInstance();
 }
 
 void ItemIdMapperTest::cleanupTestCase()
@@ -36,7 +34,6 @@ void ItemIdMapperTest::cleanupTestCase()
 	delete iMapper;
 	
 	iMapper = 0;
-	//Logger::deleteInstance();
 }
 
 void ItemIdMapperTest::testInit()

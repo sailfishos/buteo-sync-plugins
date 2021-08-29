@@ -4,8 +4,10 @@
 #include <QObject>
 #include <QContactManager>
 #include <QList>
+#include <QLoggingCategory>
 
 #include <QContactId>
+
 using namespace QtContacts;
 
 class ContactsChangeNotifier : public QObject
@@ -43,5 +45,9 @@ private:
     QContactManager* iManager;
     bool iDisabled;
 };
+
+
+Q_DECLARE_LOGGING_CATEGORY(lcSyncMLContactChange)
+Q_DECLARE_LOGGING_CATEGORY(lcSyncMLContactChangeTrace)
 
 #endif
