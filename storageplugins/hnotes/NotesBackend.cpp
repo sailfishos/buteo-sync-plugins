@@ -90,6 +90,7 @@ bool NotesBackend::init( const QString& aNotebookName, const QString& aUid,
                 openedNb->setUid(aUid);
                 if (!iStorage->addNotebook(openedNb)) {
                     qCWarning(lcSyncMLPlugin) << "Failed to add notebook to storage";
+                    openedNb.clear();
                 }
             }
         }
@@ -102,12 +103,16 @@ bool NotesBackend::init( const QString& aNotebookName, const QString& aUid,
         if(openedNb.isNull())
         {
             qCDebug(lcSyncMLPlugin) << "No default notebook exists, creating one";
-            openedNb = iStorage->createDefaultNotebook();
+            openedNb = mKCal::Notebook::Ptr(new mKCal::Notebook("Default", QString()));
+            if (!iStorage->setDefaultNotebook(openedNb)) {
+                qCWarning(lcSyncMLPlugin) << "Failed to set default notebook of storage";
+                openedNb.clear();
+            }
         }
     }
 
     bool loaded = false;
-    if(opened)
+    if(opened && openedNb)
     {
         qCDebug(lcSyncMLPlugin) << "Loading all incidences from::" << openedNb->uid();
         loaded = iStorage->loadNotebookIncidences(openedNb->uid());
