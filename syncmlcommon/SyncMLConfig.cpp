@@ -47,7 +47,7 @@ QString SyncMLConfig::getDatabasePath()
 {
     FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
 
-    QString path = Sync::syncCacheDir() + DBDIR;
+    QString path = Sync::syncConfigDir() + DBDIR;
 
     QDir dir( path );
     dir.mkpath( path );
