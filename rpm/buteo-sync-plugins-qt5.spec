@@ -2,7 +2,7 @@ Name: buteo-sync-plugins-qt5
 Version: 0.8.29
 Release: 1
 Summary: Synchronization plugins
-URL: https://git.sailfishos.org/mer-core/buteo-sync-plugins
+URL: https://github.com/sailfishos/buteo-sync-plugins
 License: LGPLv2.1
 Source0: %{name}-%{version}.tar.gz
 BuildRequires: pkgconfig(glib-2.0)
@@ -13,7 +13,6 @@ BuildRequires: pkgconfig(Qt5Versit)
 BuildRequires: pkgconfig(Qt5Sql)
 BuildRequires: pkgconfig(Qt5DBus)
 BuildRequires: pkgconfig(Qt5Test)
-BuildRequires: pkgconfig(Qt5SystemInfo)
 BuildRequires: pkgconfig(openobex)
 BuildRequires: pkgconfig(accounts-qt5)
 BuildRequires: pkgconfig(libsignon-qt5)
@@ -24,6 +23,7 @@ BuildRequires: pkgconfig(contactcache-qt5) >= 0.0.76
 BuildRequires: pkgconfig(libmkcal-qt5)
 BuildRequires: pkgconfig(KF5CalendarCore)
 BuildRequires: pkgconfig(sqlite3)
+BuildRequires: pkgconfig(systemsettings)
 BuildRequires: doxygen
 
 %description

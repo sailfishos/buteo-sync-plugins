@@ -28,13 +28,14 @@
 #include <QStringList>
 #include <QMutex>
 #include <QMap>
-#include <QDeviceInfo>
+
+#include <deviceinfo.h>
 
 namespace Buteo {
 
-    /*! \brief Default Implementaiton of DeviceInfo class
- *
- */
+    /*! \brief Default Implementation of DeviceInfo class
+     *
+     */
     class DeviceInfo
     {
 
@@ -49,14 +50,14 @@ namespace Buteo {
             ReadFromXml
         };
 
-    /*! \brief Constructor
-     *
-     */
+        /*! \brief Constructor
+         *
+         */
         DeviceInfo();
 
-    /*! \brief Destructor
-     *
-     */
+        /*! \brief Destructor
+         *
+         */
         virtual ~DeviceInfo();
 
         /*! \brief set properties to read from the devicse
@@ -127,16 +128,12 @@ namespace Buteo {
         QString getDeviceIMEI();
         QString getDeviceType();
 
-        QDeviceInfo deviceInfo;
-        QDeviceInfo systemInfo;
+        ::DeviceInfo deviceInfo;
 
 #ifdef SYNC_APP_UNITTESTS
        friend class DeviceInfoTest;
 #endif
-
-
     };
-
 }
 
 

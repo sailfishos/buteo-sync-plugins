@@ -1,12 +1,13 @@
 TARGET = syncml-server
 CONFIG += link_pkgconfig
-PKGCONFIG += glib-2.0 buteosyncfw5 buteosyncml5 Qt5SystemInfo
+PKGCONFIG += glib-2.0 buteosyncfw5 buteosyncml5 systemsettings
 
 INCLUDEPATH += . ../../syncmlcommon
 LIBS += -L../../syncmlcommon
 LIBS += -lsyncmlcommon5
 
-QT       -= gui
+QT += dbus
+QT -= gui
 
 VER_MAJ = 1
 VER_MIN = 0

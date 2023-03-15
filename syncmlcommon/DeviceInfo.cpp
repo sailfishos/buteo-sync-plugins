@@ -43,36 +43,34 @@ const QString IMEI("IMEI:");
 const QString DUMMY_IMEI("000000000000000");
 const QString DEVINFO_DEVTYPE("phone");
 
-DeviceInfo::DeviceInfo()
+Buteo::DeviceInfo::DeviceInfo()
 {
-        FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
-
+    FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
     iProperties << XML_KEY_MANUFACTURER << XML_KEY_MODEL << XML_KEY_HW_VER << XML_KEY_SW_VER << XML_KEY_FW_VER  << XML_KEY_ID << XML_KEY_DEV_TYPE;
-
     iSource = ReadFromSystem;
 }
 
-DeviceInfo::~DeviceInfo()
+Buteo::DeviceInfo::~DeviceInfo()
 {
-        FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
+    FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
 }
 
-QString DeviceInfo::getDeviceIMEI()
+QString Buteo::DeviceInfo::getDeviceIMEI()
 {
-        FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
+    FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
 
-        /// @todo returning first IMEI for now; needs fixing on multisim devices
-        return IMEI + deviceInfo.imei(0);
+    /// @todo returning first IMEI for now; needs fixing on multisim devices
+    return IMEI + deviceInfo.imeiNumbers().value(0, QString());
 }
 
-QString DeviceInfo::getManufacturer()
+QString Buteo::DeviceInfo::getManufacturer()
 {
     FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
 
     return deviceInfo.manufacturer();
 }
 
-QString DeviceInfo::getModel()
+QString Buteo::DeviceInfo::getModel()
 {
     FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
 
@@ -80,15 +78,15 @@ QString DeviceInfo::getModel()
 }
 
 
-QString DeviceInfo::getSwVersion()
+QString Buteo::DeviceInfo::getSwVersion()
 {
     FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
 
-    return deviceInfo.version(QDeviceInfo::Firmware);
+    return deviceInfo.osVersion();
 }
 
 
-QString DeviceInfo::getHwVersion()
+QString Buteo::DeviceInfo::getHwVersion()
 {
     FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
 
@@ -96,14 +94,14 @@ QString DeviceInfo::getHwVersion()
     return iHwVersion;
 }
 
-QString DeviceInfo::getFwVersion()
+QString Buteo::DeviceInfo::getFwVersion()
 {
     FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
 
     return getSwVersion();
 }
 
-QString DeviceInfo::getDeviceType()
+QString Buteo::DeviceInfo::getDeviceType()
 {
     FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
 
@@ -115,16 +113,15 @@ QString DeviceInfo::getDeviceType()
 }
 
 
-void DeviceInfo::setSourceToRead(Source &aSource)
+void Buteo::DeviceInfo::setSourceToRead(Source &aSource)
 {
     FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
 
     iSource = aSource;
-
 }
 
 
-DeviceInfo::Source DeviceInfo::getSourceToRead()
+Buteo::DeviceInfo::Source Buteo::DeviceInfo::getSourceToRead()
 {
     FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
 
@@ -132,7 +129,7 @@ DeviceInfo::Source DeviceInfo::getSourceToRead()
 }
 
 
-bool DeviceInfo::setDeviceXmlFile(QString &aFileName)
+bool Buteo::DeviceInfo::setDeviceXmlFile(QString &aFileName)
 {
     FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
     QFile file(aFileName);
@@ -147,13 +144,13 @@ bool DeviceInfo::setDeviceXmlFile(QString &aFileName)
 }
 
 
-QString DeviceInfo::DeviceXmlFile()
+QString Buteo::DeviceInfo::DeviceXmlFile()
 {
     FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
     return iDeviceInfoFile;
 }
 
-QMap<QString,QString> DeviceInfo::getDeviceInformation()
+QMap<QString,QString> Buteo::DeviceInfo::getDeviceInformation()
 {
     FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
     QMap<QString,QString> deviceMap;
@@ -216,7 +213,7 @@ QMap<QString,QString> DeviceInfo::getDeviceInformation()
 }
 
 
-void DeviceInfo::saveDevInfoToFile(QMap<QString,QString> &aDevInfo , QString &aFileName)
+void Buteo::DeviceInfo::saveDevInfoToFile(QMap<QString,QString> &aDevInfo , QString &aFileName)
 {
     FUNCTION_CALL_TRACE(lcSyncMLPluginTrace);
     QByteArray data;
