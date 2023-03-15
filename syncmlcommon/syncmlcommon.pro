@@ -4,7 +4,7 @@ DEPENDPATH += .
 CONFIG += link_pkgconfig create_pc create_prl
 
 TARGET = syncmlcommon5
-PKGCONFIG = buteosyncfw5 buteosyncml5 Qt5SystemInfo
+PKGCONFIG = buteosyncfw5 buteosyncml5 systemsettings
 
 QT += sql xml
 QT -= gui
