@@ -57,13 +57,6 @@ CONFIG += link_pkgconfig
 PKGCONFIG = buteosyncfw5 KF5CalendarCore libmkcal-qt5
 LIBS += -lsyncmlcommon5
 
-QMAKE_CLEAN += $(OBJECTS_DIR)/*.gcda $(OBJECTS_DIR)/*.gcno
-QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
-QMAKE_LFLAGS += -fprofile-arcs -ftest-coverage
-
-#install
-tests.files = hnotes-tests.ref
-tests.path = /opt/tests/buteo-sync-plugins/
 target.path = /opt/tests/buteo-sync-plugins/
-INSTALLS += target \
-            tests
+
+INSTALLS += target
