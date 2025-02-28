@@ -28,7 +28,6 @@ DEPENDPATH += . \
 
 INCLUDEPATH += . \
                ../ \
-               /usr/include/libsynccommon
 
 LIBS += -lsyncpluginmgr -lsynccommon -lmeegosyncml -lsyncprofile -lQtTest
 
